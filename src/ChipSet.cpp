@@ -11,12 +11,12 @@ void ChipSet::readFromStdin() {
   }
 }
 
-void ChipSet::print() {
-  std::string str = "    ";
+std::string ChipSet::toString() {
+  std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
     if (c[color]) {
-      str += Str::chips(color, c[color]) + ' ';
+      s += Str::chips(color, c[color]) + ' ';
     }
   }
-  Log::debug("%s", str.c_str());
+  return s;
 }

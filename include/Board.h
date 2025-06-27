@@ -12,4 +12,6 @@ private:
   int currPlayer;
   ChipSet chips;
   std::vector<char> cards; // convenție: cărțile de nivel mare primele
+
+  void readCards();
 };
