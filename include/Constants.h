@@ -10,3 +10,5 @@ const int LOG_INFO = 4;
 const int LOG_DEBUG = 5;
 
 const int LOG_LEVEL = LOG_DEBUG;
+
+const char CHIP_CHAR[4] = "◉";

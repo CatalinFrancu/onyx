@@ -11,5 +11,8 @@ void Board::readFromStdin() {
 }
 
 void Board::print() {
-  Log::debug("================ La mutare: %d", currPlayer);
+  Log::debug("================ La mutare: %d\n", currPlayer);
+  Log::debug("======== Jetoane:\n");
+  chips.print();
+  Log::debug("\n");
 }

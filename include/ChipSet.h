@@ -4,6 +4,8 @@
 
 class ChipSet {
 public:
-  void readFromStdin();
   char c[NUM_COLORS + 1];
+
+  void readFromStdin();
+  void print();
 };
