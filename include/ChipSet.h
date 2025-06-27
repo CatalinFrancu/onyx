@@ -9,4 +9,5 @@ public:
 
   void readFromStdin();
   std::string toString();
+  std::string toStringAsCards();
 };

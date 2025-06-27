@@ -56,7 +56,7 @@ void Log::write(int level, const char* ansiColor, const char* fmt, va_list args)
   if (level <= LOG_LEVEL) {
     vsprintf(buffer, fmt, args);
     interceptDefaultColor(ansiColor);
-    fprintf(stderr, "%s%s%s", ansiColor, buffer, AnsiColors::DEFAULT);
+    fprintf(stderr, "%s%s%s\n", ansiColor, buffer, AnsiColors::DEFAULT);
   }
 }
 

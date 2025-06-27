@@ -20,3 +20,13 @@ std::string ChipSet::toString() {
   }
   return s;
 }
+
+std::string ChipSet::toStringAsCards() {
+  std::string s;
+  for (int color = 0; color <= NUM_COLORS; color++) {
+    if (c[color]) {
+      s += Str::cards(color, c[color]) + ' ';
+    }
+  }
+  return s;
+}

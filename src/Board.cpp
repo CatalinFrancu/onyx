@@ -2,6 +2,7 @@
 
 #include "Card.h"
 #include "Log.h"
+#include "Noble.h"
 #include <algorithm>
 #include <stdio.h>
 
@@ -12,6 +13,7 @@ void Board::readFromStdin() {
   chips.readFromStdin();
 
   readCards();
+  readNobles();
 }
 
 void Board::readCards() {
@@ -28,13 +30,29 @@ void Board::readCards() {
   std::reverse(cards.begin(), cards.end());
 }
 
-void Board::print() {
-  Log::debug("================ La mutare: %d\n", currPlayer);
-  Log::debug("======== Jetoane:\n");
-  Log::debug("    %s\n", chips.toString().c_str());
-  Log::debug("======== Cărți:\n");
-  Log::debug("      ID  puncte  culoare  cost\n");
-  for (int id: cards) {
-    Log::debug("    %s\n", Card::get(id).toString().c_str());
+void Board::readNobles() {
+  int numNobles, id;
+  scanf("%d", &numNobles);
+  while (numNobles--) {
+    scanf("%d", &id);
+    nobles.push_back(id);
   }
+}
+
+void Board::print() {
+  Log::debug("================ La mutare: %d", currPlayer);
+
+  Log::debug("======== Nobili:");
+  for (int id: nobles) {
+    Log::debug("    %s", Noble::get(id).toString().c_str());
+  }
+
+  Log::debug("======== Cărți:");
+  Log::debug("      ID  puncte  culoare  cost");
+  for (int id: cards) {
+    Log::debug("    %s", Card::get(id).toString().c_str());
+  }
+
+  Log::debug("======== Jetoane:");
+  Log::debug("    %s", chips.toString().c_str());
 }
