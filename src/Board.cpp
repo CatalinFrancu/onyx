@@ -23,9 +23,9 @@ void Board::readFromStdin() {
 }
 
 void Board::readCards() {
-  int ignored, id;
+  int ignoredFaceDown, id;
   for (int l = 0; l < NUM_CARD_LEVELS; l++) {
-    scanf("%d", &ignored); // numărul de cărți cu fața în jos
+    scanf("%d", &ignoredFaceDown);
     for (int i = 0; i < NUM_FACE_UP_CARDS_PER_LEVEL; i++) {
       scanf("%d", &id);
       if (id) {
@@ -46,24 +46,24 @@ void Board::readNobles() {
 }
 
 void Board::print() {
-  Log::debug("================ La mutare: %d", currPlayer);
+  Log::debug("======== Player to move: %d", currPlayer);
 
-  Log::debug("======== Nobili:");
+  Log::debug("======== Nobles:");
   for (int id: nobles) {
     Log::debug("    %s", Noble::get(id).toString().c_str());
   }
 
-  Log::debug("======== Cărți:");
-  Log::debug("      ID  puncte  culoare  cost");
+  Log::debug("======== Cards:");
+  Log::debug("      ID  points  color  cost");
   for (int id: cards) {
     Log::debug("    %s", Card::get(id).toString().c_str());
   }
 
-  Log::debug("======== Jetoane:");
+  Log::debug("======== Chips:");
   Log::debug("    %s", chips.toString().c_str());
 
   for (int i = 0; i < (int)players.size(); i++) {
-    Log::debug("======== Jucătorul %d:", 1 + i);
+    Log::debug("======== Player %d:", 1 + i);
     players[i].print();
   }
 }

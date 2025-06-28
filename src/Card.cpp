@@ -129,9 +129,9 @@ void Card::computeLevel() {
 std::string Card::toString() {
   std::stringstream ss;
   ss << "[#" << std::setw(2) << id << "]";
-  ss << "     " << points;
+  ss << "    " << points;
   ss << "      " << Str::cards(color, 1);;
-  ss << "     " << cost.toString();
+  ss << "    " << cost.toString();
 
   return ss.str();
 }

@@ -51,9 +51,9 @@ void Player::readNobles() {
 
 void Player::print() {
   Log::debug("    Score: %hhd", score);
+  Log::debug("    Nobles: %d", numNobles);
   printCardsAndChips();
   printReserve();
-  Log::debug("    Nobili: %d", numNobles);
 }
 
 void Player::printCardsAndChips() {
@@ -67,12 +67,12 @@ void Player::printCardsAndChips() {
     }
   }
 
-  Log::debug("    Cărți și jetoane: %s", s.c_str());
+  Log::debug("    Cards and chips: %s", s.c_str());
 }
 
 void Player::printReserve() {
   if (reserve.size()) {
-    Log::debug("    Rezervă:");
+    Log::debug("    Reserve:");
     for (int id: reserve) {
       Log::debug("    %s", Card::get(id).toString().c_str());
     }

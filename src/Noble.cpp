@@ -38,7 +38,7 @@ void Noble::createAll() {
 std::string Noble::toString() {
   std::stringstream ss;
   ss << "[#" << std::setw(2) << id << "]";
-  ss << "     " << cost.toStringAsCards();
+  ss << "    " << cost.toStringAsCards();
 
   return ss.str();
 }
