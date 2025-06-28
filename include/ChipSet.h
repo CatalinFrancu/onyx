@@ -8,6 +8,7 @@ public:
   char c[NUM_COLORS + 1];
 
   void readFromStdin();
+  void clear();
   std::string toString();
   std::string toStringAsCards();
 };

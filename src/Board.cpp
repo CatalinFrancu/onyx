@@ -14,6 +14,12 @@ void Board::readFromStdin() {
 
   readCards();
   readNobles();
+
+  while (numPlayers--) {
+    Player p;
+    p.readFromStdin();
+    players.push_back(p);
+  }
 }
 
 void Board::readCards() {
@@ -55,4 +61,9 @@ void Board::print() {
 
   Log::debug("======== Jetoane:");
   Log::debug("    %s", chips.toString().c_str());
+
+  for (int i = 0; i < (int)players.size(); i++) {
+    Log::debug("======== Jucătorul %d:", 1 + i);
+    players[i].print();
+  }
 }

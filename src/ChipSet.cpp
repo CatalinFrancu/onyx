@@ -11,6 +11,12 @@ void ChipSet::readFromStdin() {
   }
 }
 
+void ChipSet::clear() {
+  for (int color = 0; color <= NUM_COLORS; color++) {
+    c[color] = 0;
+  }
+}
+
 std::string ChipSet::toString() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
