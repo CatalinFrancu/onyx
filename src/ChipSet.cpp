@@ -17,6 +17,13 @@ void ChipSet::clear() {
   }
 }
 
+void ChipSet::fromArray(const int* src) {
+  for (int color = 0; color < NUM_COLORS; color++) {
+    c[color] = src[color];
+  }
+  c[NUM_COLORS] = 0;
+}
+
 std::string ChipSet::toString() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {

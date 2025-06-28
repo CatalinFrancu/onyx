@@ -109,10 +109,8 @@ void Card::createAll() {
   for (int id = 1; id <= NUM_CARDS; id++) {
     const int* d = DATA[id];
     Card& card = cards[id];
-    for (int color = 0; color < NUM_COLORS; color++) {
-      card.cost.c[color] = d[color];
-    } // TODO: fromArray
     card.id = id;
+    card.cost.fromArray(d);
     card.color = d[NUM_COLORS];
     card.points = d[NUM_COLORS + 1];
     card.computeLevel();

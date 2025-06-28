@@ -28,10 +28,8 @@ void Noble::createAll() {
   for (int id = 1; id <= NUM_NOBLES; id++) {
     const int* d = DATA[id];
     Noble& noble = nobles[id];
-    for (int color = 0; color < NUM_COLORS; color++) {
-      noble.cost.c[color] = d[color];
-    } // TODO: fromArray
     noble.id = id;
+    noble.cost.fromArray(d);
   }
 }
 

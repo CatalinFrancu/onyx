@@ -9,6 +9,10 @@ public:
 
   void readFromStdin();
   void clear();
+
+  // Reads NUM_COLORS values. Sets the gold value to zero.
+  void fromArray(const int* src);
+
   std::string toString();
   std::string toStringAsCards();
 };
