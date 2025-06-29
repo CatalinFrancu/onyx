@@ -17,6 +17,8 @@ public:
   void clear();
 
   int getTotal();
+  void add(ChipSet& src);
+  void subtract(ChipSet& src);
 
   // Reads NUM_COLORS values. Sets the gold value to zero.
   void fromArray(const int* src);

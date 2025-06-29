@@ -14,6 +14,8 @@ public:
   Player();
   void readFromStdin();
   bool affords(int cardId, ChipSet& cost);
+  void gainCard(int id);
+  void loseCard(int id);
   void print();
 
 private:

@@ -37,6 +37,18 @@ int ChipSet::getTotal() {
   return total;
 }
 
+void ChipSet::add(ChipSet& src) {
+  for (int color = 0; color <= NUM_COLORS; color++) {
+    c[color] += src.c[color];
+  }
+}
+
+void ChipSet::subtract(ChipSet& src) {
+  for (int color = 0; color <= NUM_COLORS; color++) {
+    c[color] -= src.c[color];
+  }
+}
+
 void ChipSet::fromArray(const int* src) {
   for (int color = 0; color < NUM_COLORS; color++) {
     c[color] = src[color];

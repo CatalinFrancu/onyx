@@ -65,6 +65,16 @@ bool Player::affords(int cardId, ChipSet& cost) {
   return haveEnoughGold;
 }
 
+void Player::gainCard(int id) {
+  int color = Card::get(id).color;
+  cards[color]++;
+}
+
+void Player::loseCard(int id) {
+  int color = Card::get(id).color;
+  cards[color]--;
+}
+
 void Player::print() {
   Log::debug("    Score: %hhd", score);
   Log::debug("    Nobles: %d", numNobles);

@@ -48,7 +48,7 @@ void MoveGen::genReturns(int type) {
 
 void MoveGen::genReturnsRec(int col, int toReturn, int type) {
   if (!toReturn) {
-    pushMove(type, 0);
+    pushMove(type, 0, 0);
     return;
   }
   if (col == NUM_COLORS) {
@@ -67,12 +67,12 @@ void MoveGen::genReturnsRec(int col, int toReturn, int type) {
 void MoveGen::genReserve() {
   if (player->reserve.size() < MAX_RESERVE) {
     for (int i = 0; i < board->cards.size(); i++) {
-      genReserveForCard(i);
+      genReserveForCard(board->cards[i], i);
     }
   }
 }
 
-void MoveGen::genReserveForCard(int pos) {
+void MoveGen::genReserveForCard(int id, int pos) {
   bool gainGold = (board->chips[NUM_COLORS] >= 0);
   take.clear();
   take[NUM_COLORS] = gainGold;
@@ -80,12 +80,12 @@ void MoveGen::genReserveForCard(int pos) {
     for (int col = 0; col < NUM_COLORS; col++) {
       if (player->chips[col]) {
         take[col] = -1;
-        pushMove(M_RESERVE, pos);
+        pushMove(M_RESERVE, id, pos);
         take[col] = 0;
       }
     }
   } else {
-    pushMove(M_RESERVE, pos);
+    pushMove(M_RESERVE, id, pos);
   }
 }
 
@@ -93,7 +93,7 @@ void MoveGen::genBuyFaceUpCard() {
   for (int i = 0; i < board->cards.size(); i++) {
     int id = board->cards[i];
     if (player->affords(id, take)) {
-      pushMove(M_BUY_FACEUP, i);
+      pushMove(M_BUY_FACEUP, id, i);
     }
   }
 }
@@ -101,13 +101,14 @@ void MoveGen::genBuyFaceUpCard() {
 void MoveGen::genBuyReservedCard() {
   for (int i = 0; i < player->reserve.size(); i++) {
     int id = player->reserve[i];
-    if (player->affords(id, take)) {
-      pushMove(M_BUY_RESERVE, i);
+    // Other players' cards may be unknown to us.
+    if ((id > 0) && player->affords(id, take)) {
+      pushMove(M_BUY_RESERVE, id, i);
     }
   }
 }
 
-void MoveGen::pushMove(int type, int cardPos) {
+void MoveGen::pushMove(int type, int cardId, int cardPos) {
   if ((type == M_TAKE_DIFFERENT) || (type == M_TAKE_DIFFERENT)) {
     int h = take.hashCode();
     if (seenChipSets.contains(h)) {
@@ -120,6 +121,7 @@ void MoveGen::pushMove(int type, int cardPos) {
   //            numMoves, type, cardPos, take.toString().c_str());
   Move& m = moves[numMoves++];
   m.type = type;
+  m.cardId = cardId;
   m.cardPos = cardPos;
   m.delta.copyFrom(take);
 }
@@ -127,7 +129,7 @@ void MoveGen::pushMove(int type, int cardPos) {
 Move MoveGen::getRandomMove() {
   int i = Util::rand(0, numMoves - 1);
   Move& m = moves[i];
-  Log::info("chose random move type %d cardPos %d gain %s",
-            m.type, m.cardPos, m.delta.toString().c_str());
+  Log::info("chose random move type %d card #%d (pos %d) gain %s",
+            m.type, m.cardId, m.cardPos, m.delta.toString().c_str());
   return m;
 }

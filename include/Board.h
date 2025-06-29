@@ -14,6 +14,11 @@ public:
   std::vector<Player> players;
 
   void readFromStdin();
+  void makeMove(Move& m);
+  void undoMove(Move& m);
+  int staticEval();
+
+  // Translate a move into a list of tokens according to the protocol.
   std::vector<int> translateMove(Move m);
   void print();
 

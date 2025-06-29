@@ -1,6 +1,6 @@
 #include "Board.h"
 #include "Card.h"
-#include "MoveGen.h"
+#include "Evaluator.h"
 #include "Noble.h"
 
 int main(int argc, char** argv) {
@@ -11,10 +11,8 @@ int main(int argc, char** argv) {
   board.readFromStdin();
   // board.print();
 
-  MoveGen moveGen(&board);
-  moveGen.run();
-
-  Move m = moveGen.getRandomMove();
+  Evaluator eval(&board);
+  Move m = eval.getBestMove();
 
   std::vector<int> tokens = board.translateMove(m);
   for (int tok: tokens) {

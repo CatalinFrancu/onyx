@@ -8,14 +8,14 @@ class MoveGen {
 public:
   Board* board;
   Player* player;
+  Move moves[MAX_MOVES];
+  int numMoves;
 
   MoveGen(Board* board);
   void run();
   Move getRandomMove();
 
 private:
-  Move moves[MAX_MOVES];
-  int numMoves;
   int chipsInHand;
   std::unordered_set<int> seenChipSets;
 
@@ -30,9 +30,9 @@ private:
   void genReturnsRec(int col, int toReturn, int type);
 
   void genReserve();
-  void genReserveForCard(int pos);
+  void genReserveForCard(int id, int pos);
   void genBuyFaceUpCard();
   void genBuyReservedCard();
 
-  void pushMove(int type, int cardPos);
+  void pushMove(int type, int cardId, int cardPos);
 };

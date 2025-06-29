@@ -47,6 +47,56 @@ void Board::readNobles() {
   }
 }
 
+void Board::makeMove(Move& m) {
+  Player& p = players[currPlayer];
+  p.chips.add(m.delta);
+  chips.subtract(m.delta);
+
+  switch (m.type) {
+    case M_RESERVE:
+      Util::erase(cards, m.cardPos);
+      p.reserve.push_back(m.cardId);
+      break;
+    case M_BUY_FACEUP:
+      Util::erase(cards, m.cardPos);
+      p.gainCard(m.cardId);
+      break;
+    case M_BUY_RESERVE:
+      Util::erase(p.reserve, m.cardPos);
+      p.gainCard(m.cardId);
+      break;
+  }
+
+  currPlayer = (currPlayer + 1) % players.size();
+}
+
+void Board::undoMove(Move& m) {
+  currPlayer = (currPlayer + players.size() - 1) % players.size();
+
+  Player& p = players[currPlayer];
+  p.chips.subtract(m.delta);
+  chips.add(m.delta);
+
+  switch (m.type) {
+    case M_RESERVE:
+      Util::insert(cards, m.cardPos, m.cardId);
+      p.reserve.pop_back();
+      break;
+    case M_BUY_FACEUP:
+      Util::insert(cards, m.cardPos, m.cardId);
+      p.loseCard(m.cardId);
+      break;
+    case M_BUY_RESERVE:
+      Util::insert(p.reserve, m.cardPos, m.cardId);
+      p.loseCard(m.cardId);
+      break;
+  }
+}
+
+int Board::staticEval() {
+  Player& p = players[currPlayer];
+  return (int)p.score * 10 + p.cards.getTotal() * 5 + p.chips.getTotal();
+}
 
 std::vector<int> Board::translateMove(Move m) {
   switch (m.type) {
