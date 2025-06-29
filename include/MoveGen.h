@@ -12,7 +12,9 @@ public:
 private:
   Move moves[MAX_MOVES];
   int numMoves;
-  ChipSet cost;
+
+  // + means the player gains chips; - means she spends chips.
+  ChipSet take;
 
   void genTakeDifferentColorChips();
   void genTakeSameColorChips();
