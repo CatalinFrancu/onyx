@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <string>
 
+char& ChipSet::operator[](int index) {
+  return c[index];
+}
+
 void ChipSet::readFromStdin() {
   total = 0;
   for (int color = 0; color <= NUM_COLORS; color++) {

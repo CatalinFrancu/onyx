@@ -8,6 +8,8 @@ public:
   char c[NUM_COLORS + 1];
   char total; // sum of c
 
+  char& operator[](int index);
+
   void readFromStdin();
   void clear();
 

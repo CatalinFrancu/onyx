@@ -26,7 +26,7 @@ void Player::readCards() {
   while (numCards--) {
     scanf("%d", &id);
     Card card = Card::get(id);
-    cards.c[card.color]++;
+    cards[card.color]++;
     score += card.points;
   }
 }
@@ -51,17 +51,17 @@ void Player::readNobles() {
 }
 
 bool Player::affords(int cardId, ChipSet& cost) {
-  cost.c[NUM_COLORS] = 0;
+  cost[NUM_COLORS] = 0;
   Card card = Card::get(cardId);
   for (int col = 0; col < NUM_COLORS; col++) {
-    int chipsNeeded = Util::max(card.cost.c[col] - cards.c[col], 0);
-    int chipsPaid = Util::min(chipsNeeded, chips.c[col]);
+    int chipsNeeded = Util::max(card.cost[col] - cards[col], 0);
+    int chipsPaid = Util::min(chipsNeeded, chips[col]);
     int goldPaid = chipsNeeded - chipsPaid;
-    cost.c[col] = -chipsPaid; // negative from the player's PoV
-    cost.c[NUM_COLORS] -= goldPaid;
+    cost[col] = -chipsPaid; // negative from the player's PoV
+    cost[NUM_COLORS] -= goldPaid;
   }
 
-  bool haveEnoughGold = (chips.c[NUM_COLORS] >= -cost.c[NUM_COLORS]);
+  bool haveEnoughGold = (chips[NUM_COLORS] >= -cost[NUM_COLORS]);
   return haveEnoughGold;
 }
 
@@ -76,9 +76,9 @@ void Player::printCardsAndChips() {
   std::string s;
 
   for (int color = 0; color <= NUM_COLORS; color++) {
-    if (cards.c[color] || chips.c[color]) {
-      s += Str::cards(color, cards.c[color]) +
-        Str::chips(color, chips.c[color]) +
+    if (cards[color] || chips[color]) {
+      s += Str::cards(color, cards[color]) +
+        Str::chips(color, chips[color]) +
         ' ';
     }
   }
