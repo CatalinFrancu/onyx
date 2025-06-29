@@ -8,6 +8,7 @@ MoveGen::MoveGen(Board* board) {
   this->player = &board->players[board->currPlayer];
   numMoves = 0;
   chipsInHand = player->chips.getTotal();
+  seenChipSets.clear();
 }
 
 void MoveGen::run() {
@@ -107,6 +108,14 @@ void MoveGen::genBuyReservedCard() {
 }
 
 void MoveGen::pushMove(int type, int cardPos) {
+  if ((type == M_TAKE_DIFFERENT) || (type == M_TAKE_DIFFERENT)) {
+    int h = take.hashCode();
+    if (seenChipSets.contains(h)) {
+      return;
+    }
+    seenChipSets.insert(h);
+  }
+
   // Log::debug("pushing move #%d type %d cardPos %d gain %s",
   //            numMoves, type, cardPos, take.toString().c_str());
   Move& m = moves[numMoves++];

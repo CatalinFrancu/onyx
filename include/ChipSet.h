@@ -9,6 +9,10 @@ public:
 
   char& operator[](int index);
 
+  // Returns an integer that describes this ChipSet uniquely. Assumes that
+  // values are between -3 and +4.
+  int hashCode();
+
   void readFromStdin();
   void clear();
 

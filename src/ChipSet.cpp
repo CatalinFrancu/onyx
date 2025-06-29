@@ -9,6 +9,14 @@ char& ChipSet::operator[](int index) {
   return c[index];
 }
 
+int ChipSet::hashCode() {
+  int h = 0;
+  for (int color = 0; color <= NUM_COLORS; color++) {
+    h = (h << 3) + (c[color] + 3);
+  }
+  return h;
+}
+
 void ChipSet::readFromStdin() {
   for (int color = 0; color <= NUM_COLORS; color++) {
     scanf("%d", &c[color]);
