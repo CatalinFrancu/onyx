@@ -6,12 +6,15 @@ class MoveGen {
 public:
   Board* board;
   Player* player;
+
   MoveGen(Board* board);
   void run();
+  Move getRandomMove();
 
 private:
   Move moves[MAX_MOVES];
   int numMoves;
+  int chipsInHand;
 
   // + means the player gains chips; - means she spends chips.
   ChipSet take;

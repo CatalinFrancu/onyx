@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "Log.h"
 #include "Noble.h"
+#include "Util.h"
 #include <algorithm>
 #include <stdio.h>
 
@@ -43,6 +44,84 @@ void Board::readNobles() {
   while (numNobles--) {
     scanf("%d", &id);
     nobles.push_back(id);
+  }
+}
+
+
+std::vector<int> Board::translateMove(Move m) {
+  switch (m.type) {
+    case M_TAKE_DIFFERENT: return translateTakeDifferentMove(m);
+    case M_TAKE_SAME: return translateTakeSameMove(m);
+    case M_RESERVE: return translateReserveMove(m);
+    case M_BUY_FACEUP: return translateBuyFaceupMove(m);
+    case M_BUY_RESERVE: return translateBuyReserveMove(m);
+    default: exit(1);
+  }
+}
+
+std::vector<int> Board::translateTakeDifferentMove(Move m) {
+  int numTaken = m.delta.countValue(1);
+
+  std::vector<int> v;
+  v.push_back(M_TAKE_DIFFERENT);
+  v.push_back(numTaken);
+
+  for (int col = 0; col < NUM_COLORS; col++) {
+    if (m.delta[col] == 1) {
+      v.push_back(col);
+    }
+  }
+
+  translateReturns(m, v);
+  return v;
+}
+
+std::vector<int> Board::translateTakeSameMove(Move m) {
+  std::vector<int> v;
+  v.push_back(M_TAKE_SAME);
+
+  // There may not be a value of 2, or even 1, due to returns.
+  int pos = m.delta.findAtLeast(1);
+
+  if (pos >= NUM_COLORS) {
+    pos = chips.findAtLeast(TAKE_TWO_LIMIT);
+  }
+
+  v.push_back(pos);
+  m.delta[pos] -= 2;
+  translateReturns(m, v);
+
+  return v;
+}
+
+std::vector<int> Board::translateReserveMove(Move m) {
+  std::vector<int> v;
+  v.push_back(M_RESERVE);
+  v.push_back(cards[m.cardPos]);
+  translateReturns(m, v);
+  return v;
+}
+
+std::vector<int> Board::translateBuyFaceupMove(Move m) {
+  std::vector<int> v;
+  v.push_back(M_BUY_FACEUP);
+  v.push_back(cards[m.cardPos]);
+  return v;
+}
+
+std::vector<int> Board::translateBuyReserveMove(Move m) {
+  std::vector<int> v;
+  // The protocol does not differentiate between the two M_BUY_* cases.
+  v.push_back(M_BUY_FACEUP);
+  v.push_back(players[currPlayer].reserve[m.cardPos]);
+  return v;
+}
+
+void Board::translateReturns(Move m, std::vector<int>& v) {
+  for (int col = 0; col < NUM_COLORS; col++) {
+    for (int i = 0; i < -m.delta[col]; i++) {
+      v.push_back(col);
+    }
   }
 }
 

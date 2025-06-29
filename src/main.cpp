@@ -9,10 +9,18 @@ int main(int argc, char** argv) {
 
   Board board;
   board.readFromStdin();
-  board.print();
+  // board.print();
 
   MoveGen moveGen(&board);
   moveGen.run();
+
+  Move m = moveGen.getRandomMove();
+
+  std::vector<int> tokens = board.translateMove(m);
+  for (int tok: tokens) {
+    printf("%d ", tok);
+  }
+  printf("\n");
 
   return 0;
 }

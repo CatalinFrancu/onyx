@@ -14,10 +14,17 @@ public:
   std::vector<Player> players;
 
   void readFromStdin();
-  Player* getCurrentPlayer();
+  std::vector<int> translateMove(Move m);
   void print();
 
 private:
   void readCards();
   void readNobles();
+
+  std::vector<int> translateTakeDifferentMove(Move m);
+  std::vector<int> translateTakeSameMove(Move m);
+  std::vector<int> translateReserveMove(Move m);
+  std::vector<int> translateBuyFaceupMove(Move m);
+  std::vector<int> translateBuyReserveMove(Move m);
+  void translateReturns(Move m, std::vector<int>& v);
 };

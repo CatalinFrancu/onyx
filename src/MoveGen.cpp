@@ -1,11 +1,13 @@
 #include "MoveGen.h"
 
+#include "Log.h"
 #include "Util.h"
 
 MoveGen::MoveGen(Board* board) {
   this->board = board;
   this->player = &board->players[board->currPlayer];
   numMoves = 0;
+  chipsInHand = player->chips.getTotal();
 }
 
 void MoveGen::run() {
@@ -39,7 +41,7 @@ void MoveGen::genTakeSameColorChips() {
 }
 
 void MoveGen::genReturns(int type) {
-  int toReturn = Util::max(player->chips.total + take.total - MAX_CHIPS, 0);
+  int toReturn = Util::max(chipsInHand + take.getTotal() - MAX_CHIPS, 0);
   genReturnsRec(0, toReturn, type);
 }
 
@@ -73,7 +75,7 @@ void MoveGen::genReserveForCard(int pos) {
   bool gainGold = (board->chips[NUM_COLORS] >= 0);
   take.clear();
   take[NUM_COLORS] = gainGold;
-  if ((player->chips.total == MAX_CHIPS) && gainGold) {
+  if ((chipsInHand == MAX_CHIPS) && gainGold) {
     for (int col = 0; col < NUM_COLORS; col++) {
       if (player->chips[col]) {
         take[col] = -1;
@@ -105,10 +107,18 @@ void MoveGen::genBuyReservedCard() {
 }
 
 void MoveGen::pushMove(int type, int cardPos) {
-  printf("pushing move type %d cardPos %d cost %s\n",
-         type, cardPos, take.toString().c_str());
+  // Log::debug("pushing move #%d type %d cardPos %d gain %s",
+  //            numMoves, type, cardPos, take.toString().c_str());
   Move& m = moves[numMoves++];
   m.type = type;
   m.cardPos = cardPos;
   m.delta.copyFrom(take);
+}
+
+Move MoveGen::getRandomMove() {
+  int i = Util::rand(0, numMoves - 1);
+  Move& m = moves[i];
+  Log::info("chose random move type %d cardPos %d gain %s",
+            m.type, m.cardPos, m.delta.toString().c_str());
+  return m;
 }

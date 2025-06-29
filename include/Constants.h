@@ -22,7 +22,7 @@ const int M_RESERVE = 3;
 const int M_BUY_FACEUP = 4;
 const int M_BUY_RESERVE = 5;
 
-const int MAX_MOVES = 100;
+const int MAX_MOVES = 1'000;
 
 const int LOG_FATAL = 0;
 const int LOG_ERROR = 1;
