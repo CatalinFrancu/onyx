@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "Log.h"
 #include "Str.h"
+#include "Util.h"
 
 Player::Player() {
   score = 0;
@@ -47,6 +48,21 @@ void Player::readNobles() {
     int ignoredNobleId;
     scanf("%d", &ignoredNobleId);
   }
+}
+
+bool Player::affords(int cardId, ChipSet& cost) {
+  cost.c[NUM_COLORS] = 0;
+  Card card = Card::get(cardId);
+  for (int col = 0; col < NUM_COLORS; col++) {
+    int chipsNeeded = Util::max(card.cost.c[col] - cards.c[col], 0);
+    int chipsPaid = Util::min(chipsNeeded, chips.c[col]);
+    int goldPaid = chipsNeeded - chipsPaid;
+    cost.c[col] = -chipsPaid; // negative from the player's PoV
+    cost.c[NUM_COLORS] -= goldPaid;
+  }
+
+  bool haveEnoughGold = (chips.c[NUM_COLORS] >= -cost.c[NUM_COLORS]);
+  return haveEnoughGold;
 }
 
 void Player::print() {

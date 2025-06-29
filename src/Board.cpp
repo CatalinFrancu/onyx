@@ -9,6 +9,7 @@
 void Board::readFromStdin() {
   int numPlayers, ignored;
   scanf("%d %d", &numPlayers, &currPlayer); // num_players
+  currPlayer--; // make it 0-based
   scanf("%d", &ignored); // round_number
   chips.readFromStdin();
 
@@ -46,7 +47,7 @@ void Board::readNobles() {
 }
 
 void Board::print() {
-  Log::debug("======== Player to move: %d", currPlayer);
+  Log::debug("======== Player to move: %d", currPlayer + 1);
 
   Log::debug("======== Nobles:");
   for (int id: nobles) {

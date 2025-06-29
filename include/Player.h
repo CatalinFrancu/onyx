@@ -13,6 +13,7 @@ public:
 
   Player();
   void readFromStdin();
+  bool affords(int cardId, ChipSet& cost);
   void print();
 
 private:

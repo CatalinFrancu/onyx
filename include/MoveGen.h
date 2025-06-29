@@ -1,0 +1,30 @@
+#pragma once
+
+#include "Board.h"
+
+class MoveGen {
+public:
+  Board* board;
+  Player* player;
+  MoveGen(Board* board);
+  void run();
+
+private:
+  Move moves[MAX_MOVES];
+  int numMoves;
+  ChipSet cost;
+
+  void genTakeDifferentColorChips();
+  void genTakeSameColorChips();
+  // Given that the player had player->chips to begin with, and took more
+  // chips as described by cost, figure out all the possible returns.
+  void genReturns(int type);
+  void genReturnsRec(int col, int toReturn, int type);
+
+  void genReserve();
+  void genReserveForCard(int pos);
+  void genBuyFaceUpCard();
+  void genBuyReservedCard();
+
+  void pushMove(int type, int cardPos);
+};

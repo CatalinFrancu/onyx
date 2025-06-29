@@ -12,6 +12,10 @@ std::string Str::cards(int color, int count) {
 
 std::string Str::colorRepeat(const char* msg, int color, int count) {
   std::string s(AnsiColors::CHIPS[color]);
+  if (count < 0) {
+    s += '-';
+    count = -count;
+  }
   while (count--) {
     s += msg;
   }
