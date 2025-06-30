@@ -108,10 +108,10 @@ void Player::printCardsAndChips() {
 }
 
 void Player::printReserve() {
-  if (!reserve.empty()) {
+  if (reserve) {
     Log::debug("    Reserve:");
     BitSet cp = reserve;
-    while (!cp.empty()) {
+    while (cp) {
       int id = cp.getAndClear();
       Log::debug("    %s", Card::get(id).toString().c_str());
     }

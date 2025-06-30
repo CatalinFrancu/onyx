@@ -195,7 +195,7 @@ void Board::printCards() {
   Log::debug("      ID  points  color  cost");
 
   BitSet cp = cards;
-  while (!cp.empty()) {
+  while (cp) {
     int id = cp.getAndClear();
     Log::debug("    %s", Card::get(id).toString().c_str());
   }

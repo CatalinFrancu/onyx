@@ -19,11 +19,3 @@ int Util::rand(int lo, int hi) {
   std::uniform_int_distribution<> distrib(lo, hi);
   return distrib(rng);
 }
-
-void Util::insert(std::vector<char>& v, int pos, int val) {
-  v.insert(v.begin() + pos, val);
-}
-
-void Util::erase(std::vector<char>& v, int pos) {
-  v.erase(v.begin() + pos);
-}

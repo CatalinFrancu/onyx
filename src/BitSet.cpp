@@ -6,8 +6,8 @@ void BitSet::clear() {
   x = 0;
 }
 
-bool BitSet::empty() {
-  return (x == 0);
+BitSet::operator bool() const {
+  return (x != 0);
 }
 
 void BitSet::toggle(int b) {

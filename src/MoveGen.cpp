@@ -68,7 +68,7 @@ void MoveGen::genReturnsRec(int col, int toReturn, int type) {
 void MoveGen::genReserve() {
   if (player->reserve.popcount() + player->numSecretReserve < MAX_RESERVE) {
     BitSet cp = board->cards;
-    while (!cp.empty()) {
+    while (cp) {
       int id = cp.getAndClear();
       genReserveForCard(id);
     }
@@ -94,7 +94,7 @@ void MoveGen::genReserveForCard(int id) {
 
 void MoveGen::genBuyFaceUpCard() {
   BitSet cp = board->cards;
-  while (!cp.empty()) {
+  while (cp) {
     int id = cp.getAndClear();
     if (player->affords(id, take)) {
       pushMove(M_BUY_FACEUP, id);
@@ -104,7 +104,7 @@ void MoveGen::genBuyFaceUpCard() {
 
 void MoveGen::genBuyReservedCard() {
   BitSet cp = player->reserve;
-  while (!cp.empty()) {
+  while (cp) {
     int id = cp.getAndClear();
     if (player->affords(id, take)) {
       pushMove(M_BUY_RESERVE, id);
