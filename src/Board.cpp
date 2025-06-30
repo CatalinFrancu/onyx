@@ -96,9 +96,13 @@ void Board::undoMove(Move& m) {
 int Board::staticEval() {
   int result = 0;
   int n = Util::max(players.size(), 2);
+  // We are trying to figure out the quality of the position for the player
+  // who has *just moved*.
+  int prev = (currPlayer + players.size() - 1) % players.size();
+
   for (int p = 0; p < players.size(); p++) {
     int x = players[p].staticEval();
-    if (p == currPlayer) {
+    if (p == prev) {
       result += x * (n - 1);
     } else {
       result -= x;
