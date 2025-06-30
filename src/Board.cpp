@@ -55,14 +55,14 @@ void Board::makeMove(Move& m) {
   switch (m.type) {
     case M_RESERVE:
       cards.toggle(m.cardId);
-      p.reserve.push_back(m.cardId);
+      p.reserve.toggle(m.cardId);
       break;
     case M_BUY_FACEUP:
       cards.toggle(m.cardId);
       p.gainCard(m.cardId);
       break;
     case M_BUY_RESERVE:
-      Util::erase(p.reserve, m.cardPos);
+      p.reserve.toggle(m.cardId);
       p.gainCard(m.cardId);
       break;
   }
@@ -80,14 +80,14 @@ void Board::undoMove(Move& m) {
   switch (m.type) {
     case M_RESERVE:
       cards.toggle(m.cardId);
-      p.reserve.pop_back();
+      p.reserve.toggle(m.cardId);
       break;
     case M_BUY_FACEUP:
       cards.toggle(m.cardId);
       p.loseCard(m.cardId);
       break;
     case M_BUY_RESERVE:
-      Util::insert(p.reserve, m.cardPos, m.cardId);
+      p.reserve.toggle(m.cardId);
       p.loseCard(m.cardId);
       break;
   }
@@ -106,8 +106,8 @@ std::vector<int> Board::translateMove(Move m) {
     case M_TAKE_DIFFERENT: return translateTakeDifferentMove(m);
     case M_TAKE_SAME: return translateTakeSameMove(m);
     case M_RESERVE: return translateReserveMove(m);
-    case M_BUY_FACEUP: return translateBuyFaceupMove(m);
-    case M_BUY_RESERVE: return translateBuyReserveMove(m);
+    case M_BUY_FACEUP: return translateBuyMove(m);
+    case M_BUY_RESERVE: return translateBuyMove(m);
     default: exit(1);
   }
 }
@@ -155,18 +155,11 @@ std::vector<int> Board::translateReserveMove(Move m) {
   return v;
 }
 
-std::vector<int> Board::translateBuyFaceupMove(Move m) {
-  std::vector<int> v;
-  v.push_back(M_BUY_FACEUP);
-  v.push_back(m.cardId);
-  return v;
-}
-
-std::vector<int> Board::translateBuyReserveMove(Move m) {
+std::vector<int> Board::translateBuyMove(Move m) {
   std::vector<int> v;
   // The protocol does not differentiate between the two M_BUY_* cases.
   v.push_back(M_BUY_FACEUP);
-  v.push_back(players[currPlayer].reserve[m.cardPos]);
+  v.push_back(m.cardId);
   return v;
 }
 

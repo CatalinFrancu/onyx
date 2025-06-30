@@ -10,6 +10,7 @@ Player::Player() {
   chips.clear();
   cards.clear();
   reserve.clear();
+  numSecretReserve = 0;
   numNobles = 0;
 }
 
@@ -36,7 +37,11 @@ void Player::readReserve() {
   scanf("%d", &numReserve);
   while (numReserve--) {
     scanf("%d", &id);
-    reserve.push_back(id);
+    if (id > 0) {
+      reserve.toggle(id);
+    } else {
+      numSecretReserve++;
+    }
   }
 }
 
@@ -103,9 +108,11 @@ void Player::printCardsAndChips() {
 }
 
 void Player::printReserve() {
-  if (reserve.size()) {
+  if (!reserve.empty()) {
     Log::debug("    Reserve:");
-    for (int id: reserve) {
+    BitSet cp = reserve;
+    while (!cp.empty()) {
+      int id = cp.getAndClear();
       Log::debug("    %s", Card::get(id).toString().c_str());
     }
   }

@@ -13,7 +13,6 @@ public:
 
   MoveGen(Board* board);
   void run();
-  Move getRandomMove();
 
 private:
   int chipsInHand;
@@ -37,5 +36,5 @@ private:
   // When there are no other moves.
   void addNullMove();
 
-  void pushMove(int type, int cardId, int cardPos);
+  void pushMove(int type, int cardId);
 };

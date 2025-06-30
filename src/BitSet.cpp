@@ -14,6 +14,10 @@ void BitSet::toggle(int b) {
   x ^= (u128)1 << b;
 }
 
+int BitSet::popcount() {
+  return __builtin_popcountll(x >> 64) + __builtin_popcountll(x);
+}
+
 int BitSet::getAndClear() {
   int msb = 127 - clz();
   toggle(msb);

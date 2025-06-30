@@ -1,14 +1,15 @@
 #pragma once
 
+#include "BitSet.h"
 #include "ChipSet.h"
-#include <vector>
 
 class Player {
 public:
   char points;
   ChipSet chips;
   ChipSet cards;
-  std::vector<char> reserve;
+  BitSet reserve;
+  int numSecretReserve;
   int numNobles;
 
   Player();

@@ -7,7 +7,6 @@ class Move {
 public:
   char type;
   char cardId;
-  char cardPos;  // index in Board.cards of the card taken/bought
   char noblePos; // index in Board.nobles of the noble gained
   ChipSet delta; // chips gained (+) or spent (-)
 

@@ -9,6 +9,7 @@ public:
   void clear();
   bool empty();
   void toggle(int b);
+  int popcount();
   int getAndClear();
 
 private:
