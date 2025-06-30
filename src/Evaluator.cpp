@@ -1,5 +1,6 @@
 #include "Evaluator.h"
 
+#include "Log.h"
 #include "MoveGen.h"
 #include "Util.h"
 
@@ -20,6 +21,7 @@ Move Evaluator::getBestMove() {
     Move& m = moveGen.moves[i];
     board->makeMove(m);
     Score score = minimax(MINIMAX_DEPTH);
+    // Log::info("%s has a score of %d", m.toString().c_str(), score);
     if (score.betterThan(bestScore, p)) {
       bestScore = score;
       bestMove = m;

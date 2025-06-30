@@ -25,17 +25,17 @@ void Board::readFromStdin() {
 }
 
 void Board::readCards() {
+  cards.clear();
   int ignoredFaceDown, id;
   for (int l = 0; l < NUM_CARD_LEVELS; l++) {
     scanf("%d", &ignoredFaceDown);
     for (int i = 0; i < NUM_FACE_UP_CARDS_PER_LEVEL; i++) {
       scanf("%d", &id);
       if (id) {
-        cards.push_back(id);
+        cards.toggle(id);
       }
     }
   }
-  std::reverse(cards.begin(), cards.end());
 }
 
 void Board::readNobles() {
@@ -54,11 +54,11 @@ void Board::makeMove(Move& m) {
 
   switch (m.type) {
     case M_RESERVE:
-      Util::erase(cards, m.cardPos);
+      cards.toggle(m.cardId);
       p.reserve.push_back(m.cardId);
       break;
     case M_BUY_FACEUP:
-      Util::erase(cards, m.cardPos);
+      cards.toggle(m.cardId);
       p.gainCard(m.cardId);
       break;
     case M_BUY_RESERVE:
@@ -79,11 +79,11 @@ void Board::undoMove(Move& m) {
 
   switch (m.type) {
     case M_RESERVE:
-      Util::insert(cards, m.cardPos, m.cardId);
+      cards.toggle(m.cardId);
       p.reserve.pop_back();
       break;
     case M_BUY_FACEUP:
-      Util::insert(cards, m.cardPos, m.cardId);
+      cards.toggle(m.cardId);
       p.loseCard(m.cardId);
       break;
     case M_BUY_RESERVE:
@@ -150,7 +150,7 @@ std::vector<int> Board::translateTakeSameMove(Move m) {
 std::vector<int> Board::translateReserveMove(Move m) {
   std::vector<int> v;
   v.push_back(M_RESERVE);
-  v.push_back(cards[m.cardPos]);
+  v.push_back(m.cardId);
   translateReturns(m, v);
   return v;
 }
@@ -158,7 +158,7 @@ std::vector<int> Board::translateReserveMove(Move m) {
 std::vector<int> Board::translateBuyFaceupMove(Move m) {
   std::vector<int> v;
   v.push_back(M_BUY_FACEUP);
-  v.push_back(cards[m.cardPos]);
+  v.push_back(m.cardId);
   return v;
 }
 
@@ -186,11 +186,7 @@ void Board::print() {
     Log::debug("    %s", Noble::get(id).toString().c_str());
   }
 
-  Log::debug("======== Cards:");
-  Log::debug("      ID  points  color  cost");
-  for (int id: cards) {
-    Log::debug("    %s", Card::get(id).toString().c_str());
-  }
+  printCards();
 
   Log::debug("======== Chips:");
   Log::debug("    %s", chips.toString().c_str());
@@ -198,5 +194,16 @@ void Board::print() {
   for (int i = 0; i < (int)players.size(); i++) {
     Log::debug("======== Player %d:", 1 + i);
     players[i].print();
+  }
+}
+
+void Board::printCards() {
+  Log::debug("======== Cards:");
+  Log::debug("      ID  points  color  cost");
+
+  BitSet cp = cards;
+  while (!cp.empty()) {
+    int id = cp.getAndClear();
+    Log::debug("    %s", Card::get(id).toString().c_str());
   }
 }

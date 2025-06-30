@@ -30,7 +30,7 @@ private:
   void genReturnsRec(int col, int toReturn, int type);
 
   void genReserve();
-  void genReserveForCard(int id, int pos);
+  void genReserveForCard(int id);
   void genBuyFaceUpCard();
   void genBuyReservedCard();
 

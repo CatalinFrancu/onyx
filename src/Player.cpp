@@ -78,7 +78,7 @@ void Player::loseCard(int id) {
 }
 
 int Player::staticEval() {
-  return (int)points * 10 + cards.getTotal() * 5 + chips.getTotal();
+  return (int)points * 20 + cards.getTotal() * 10 + chips.getTotal();
 }
 
 void Player::print() {

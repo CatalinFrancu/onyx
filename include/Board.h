@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BitSet.h"
 #include "ChipSet.h"
 #include "Move.h"
 #include "Player.h"
@@ -10,7 +11,7 @@ class Board {
 public:
   int currPlayer;
   ChipSet chips;
-  std::vector<char> cards; // high-level cards go first
+  BitSet cards;
   std::vector<char> nobles;
   std::vector<Player> players;
 
@@ -33,4 +34,6 @@ private:
   std::vector<int> translateBuyFaceupMove(Move m);
   std::vector<int> translateBuyReserveMove(Move m);
   void translateReturns(Move m, std::vector<int>& v);
+
+  void printCards();
 };

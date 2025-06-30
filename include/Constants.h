@@ -1,5 +1,8 @@
 #pragma once
 
+typedef unsigned __int128 u128;
+typedef unsigned long long u64;
+
 const int MAX_PLAYERS = 4;
 
 const int NUM_COLORS = 5;

@@ -67,13 +67,15 @@ void MoveGen::genReturnsRec(int col, int toReturn, int type) {
 
 void MoveGen::genReserve() {
   if (player->reserve.size() < MAX_RESERVE) {
-    for (int i = 0; i < board->cards.size(); i++) {
-      genReserveForCard(board->cards[i], i);
+    BitSet cp = board->cards;
+    while (!cp.empty()) {
+      int id = cp.getAndClear();
+      genReserveForCard(id);
     }
   }
 }
 
-void MoveGen::genReserveForCard(int id, int pos) {
+void MoveGen::genReserveForCard(int id) {
   bool gainGold = (board->chips[NUM_COLORS] > 0);
   take.clear();
   take[NUM_COLORS] = gainGold;
@@ -81,20 +83,21 @@ void MoveGen::genReserveForCard(int id, int pos) {
     for (int col = 0; col < NUM_COLORS; col++) {
       if (player->chips[col]) {
         take[col] = -1;
-        pushMove(M_RESERVE, id, pos);
+        pushMove(M_RESERVE, id, 0);
         take[col] = 0;
       }
     }
   } else {
-    pushMove(M_RESERVE, id, pos);
+    pushMove(M_RESERVE, id, 0);
   }
 }
 
 void MoveGen::genBuyFaceUpCard() {
-  for (int i = 0; i < board->cards.size(); i++) {
-    int id = board->cards[i];
+  BitSet cp = board->cards;
+  while (!cp.empty()) {
+    int id = cp.getAndClear();
     if (player->affords(id, take)) {
-      pushMove(M_BUY_FACEUP, id, i);
+      pushMove(M_BUY_FACEUP, id, 0);
     }
   }
 }
