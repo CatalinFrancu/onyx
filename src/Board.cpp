@@ -93,22 +93,12 @@ void Board::undoMove(Move& m) {
   }
 }
 
-int Board::staticEval() {
-  int result = 0;
-  int n = Util::max(players.size(), 2);
-  // We are trying to figure out the quality of the position for the player
-  // who has *just moved*.
-  int prev = (currPlayer + players.size() - 1) % players.size();
-
+Score Board::staticEval() {
+  Score sc;
   for (int p = 0; p < players.size(); p++) {
-    int x = players[p].staticEval();
-    if (p == prev) {
-      result += x * (n - 1);
-    } else {
-      result -= x;
-    }
+    sc.s[p] = players[p].staticEval();
   }
-  return result;
+  return sc;
 }
 
 std::vector<int> Board::translateMove(Move m) {

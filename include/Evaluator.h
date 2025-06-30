@@ -9,4 +9,7 @@ public:
 
   Evaluator(Board* board);
   Move getBestMove();
+
+private:
+  int minimax(int depth);
 };

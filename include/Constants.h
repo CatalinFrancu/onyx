@@ -1,5 +1,7 @@
 #pragma once
 
+const int MAX_PLAYERS = 4;
+
 const int NUM_COLORS = 5;
 
 const int MAX_CHIPS = 10;
@@ -23,6 +25,9 @@ const int M_BUY_FACEUP = 4;
 const int M_BUY_RESERVE = 5;
 
 const int MAX_MOVES = 1'000;
+
+const int MINIMAX_DEPTH = 2;
+const int INFINITY = 100'000'000;
 
 const int LOG_FATAL = 0;
 const int LOG_ERROR = 1;

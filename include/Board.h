@@ -3,6 +3,7 @@
 #include "ChipSet.h"
 #include "Move.h"
 #include "Player.h"
+#include "Score.h"
 #include <vector>
 
 class Board {
@@ -16,7 +17,7 @@ public:
   void readFromStdin();
   void makeMove(Move& m);
   void undoMove(Move& m);
-  int staticEval();
+  Score staticEval();
 
   // Translate a move into a list of tokens according to the protocol.
   std::vector<int> translateMove(Move m);
