@@ -10,7 +10,7 @@ Move Evaluator::getBestMove() {
   MoveGen moveGen(board);
   moveGen.run();
 
-  int bestScore = -1;
+  int bestScore = -1'000'000;
   Move bestMove;
 
   for (int i = 0; i < moveGen.numMoves; i++) {

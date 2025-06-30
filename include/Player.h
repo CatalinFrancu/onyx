@@ -5,7 +5,7 @@
 
 class Player {
 public:
-  char score;
+  char points;
   ChipSet chips;
   ChipSet cards;
   std::vector<char> reserve;
@@ -16,6 +16,7 @@ public:
   bool affords(int cardId, ChipSet& cost);
   void gainCard(int id);
   void loseCard(int id);
+  int staticEval();
   void print();
 
 private:

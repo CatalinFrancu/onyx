@@ -94,8 +94,17 @@ void Board::undoMove(Move& m) {
 }
 
 int Board::staticEval() {
-  Player& p = players[currPlayer];
-  return (int)p.score * 10 + p.cards.getTotal() * 5 + p.chips.getTotal();
+  int result = 0;
+  int n = Util::max(players.size(), 2);
+  for (int p = 0; p < players.size(); p++) {
+    int x = players[p].staticEval();
+    if (p == currPlayer) {
+      result += x * (n - 1);
+    } else {
+      result -= x;
+    }
+  }
+  return result;
 }
 
 std::vector<int> Board::translateMove(Move m) {

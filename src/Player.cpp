@@ -6,7 +6,7 @@
 #include "Util.h"
 
 Player::Player() {
-  score = 0;
+  points = 0;
   chips.clear();
   cards.clear();
   reserve.clear();
@@ -27,7 +27,7 @@ void Player::readCards() {
     scanf("%d", &id);
     Card card = Card::get(id);
     cards[card.color]++;
-    score += card.points;
+    points += card.points;
   }
 }
 
@@ -42,7 +42,7 @@ void Player::readReserve() {
 
 void Player::readNobles() {
   scanf("%d", &numNobles);
-  score += numNobles * NOBLE_POINTS;
+  points += numNobles * NOBLE_POINTS;
 
   for (int i = 0; i < numNobles; i++) {
     int ignoredNobleId;
@@ -68,15 +68,21 @@ bool Player::affords(int cardId, ChipSet& cost) {
 void Player::gainCard(int id) {
   int color = Card::get(id).color;
   cards[color]++;
+  points += Card::get(id).points;
 }
 
 void Player::loseCard(int id) {
   int color = Card::get(id).color;
   cards[color]--;
+  points -= Card::get(id).points;
+}
+
+int Player::staticEval() {
+  return (int)points * 10 + cards.getTotal() * 5 + chips.getTotal();
 }
 
 void Player::print() {
-  Log::debug("    Score: %hhd", score);
+  Log::debug("    Points: %hhd", points);
   Log::debug("    Nobles: %d", numNobles);
   printCardsAndChips();
   printReserve();
