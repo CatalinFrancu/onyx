@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ChipSet.h"
+#include <string>
+
 class Move {
 public:
   char type;
@@ -7,4 +10,6 @@ public:
   char cardPos;  // index in Board.cards of the card taken/bought
   char noblePos; // index in Board.nobles of the noble gained
   ChipSet delta; // chips gained (+) or spent (-)
+
+  std::string toString();
 };

@@ -73,7 +73,7 @@ void MoveGen::genReserve() {
 }
 
 void MoveGen::genReserveForCard(int id, int pos) {
-  bool gainGold = (board->chips[NUM_COLORS] >= 0);
+  bool gainGold = (board->chips[NUM_COLORS] > 0);
   take.clear();
   take[NUM_COLORS] = gainGold;
   if ((chipsInHand == MAX_CHIPS) && gainGold) {
