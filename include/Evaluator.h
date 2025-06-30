@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "Move.h"
+#include "Score.h"
 
 class Evaluator {
 public:
@@ -11,5 +12,5 @@ public:
   Move getBestMove();
 
 private:
-  int minimax(int depth);
+  Score minimax(int depth);
 };

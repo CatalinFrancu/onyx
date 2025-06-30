@@ -1,5 +1,6 @@
 #include "Score.h"
 
+#include "Constants.h"
 #include "Util.h"
 
 int Score::numPlayers;
@@ -12,7 +13,7 @@ void Score::badFor(int player) {
   for (int i = 0; i < numPlayers; i++) {
     s[i] = 0;
   }
-  s[player] = -INFINITY;
+  s[player] = -INFIN;
 }
 
 int Score::calculate(int player) {
