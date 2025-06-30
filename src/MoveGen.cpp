@@ -2,6 +2,7 @@
 
 #include "Log.h"
 #include "Util.h"
+#include <algorithm>
 
 MoveGen::MoveGen(Board* board) {
   this->board = board;
@@ -110,6 +111,11 @@ void MoveGen::genBuyReservedCard() {
       pushMove(M_BUY_RESERVE, id);
     }
   }
+}
+
+void MoveGen::randomizeMoves() {
+  std::shuffle(moves, moves + numMoves, Util::rng);
+
 }
 
 void MoveGen::addNullMove() {

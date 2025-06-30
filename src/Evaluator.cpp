@@ -11,6 +11,7 @@ Evaluator::Evaluator(Board* board) {
 Move Evaluator::getBestMove() {
   MoveGen moveGen(board);
   moveGen.run();
+  moveGen.randomizeMoves();
 
   int p = board->currPlayer;
   Score bestScore;

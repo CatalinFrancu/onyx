@@ -4,6 +4,8 @@
 
 class Util {
 public:
+  static std::mt19937 rng;
+
   static int min(int x, int y);
   static int max(int x, int y);
   static int popcount(int x);
@@ -11,6 +13,5 @@ public:
 
 private:
   static std::random_device rd;
-  static std::mt19937 rng;
 
 };

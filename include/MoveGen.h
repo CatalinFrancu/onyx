@@ -13,6 +13,7 @@ public:
 
   MoveGen(Board* board);
   void run();
+  void randomizeMoves();
 
 private:
   int chipsInHand;
