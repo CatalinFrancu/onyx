@@ -35,10 +35,10 @@ void MoveGen::genTakeDifferentColorChips() {
 void MoveGen::genTakeSameColorChips() {
   take.clear();
   for (int col = 0; col < NUM_COLORS; col++) {
-    if (board->chips[col] >= TAKE_TWO_LIMIT) {
-      take[col] = 2;
+    if (board->chips.get(col) >= TAKE_TWO_LIMIT) {
+      take.set(col, 2);
       genReturns(M_TAKE_SAME);
-      take[col] = 0;
+      take.set(col, 0);
     }
   }
 }
@@ -57,13 +57,13 @@ void MoveGen::genReturnsRec(int col, int toReturn, int type) {
     return;
   }
 
-  int avail = player->chips[col] + take[col];
+  int avail = player->chips.get(col) + take.get(col);
   int maxReturn = Util::min(avail, toReturn);
   for (int r = 0; r <= maxReturn; r++) {
-    take[col] -= r;
     genReturnsRec(col + 1, toReturn - r, type);
-    take[col] += r;
+    take.change(col, -1);
   }
+  take.change(col, maxReturn + 1);
 }
 
 void MoveGen::genReserve() {
@@ -77,15 +77,15 @@ void MoveGen::genReserve() {
 }
 
 void MoveGen::genReserveForCard(int id) {
-  bool gainGold = (board->chips[NUM_COLORS] > 0);
+  bool gainGold = (board->chips.get(NUM_COLORS) > 0);
   take.clear();
-  take[NUM_COLORS] = gainGold;
+  take.set(NUM_COLORS, gainGold);
   if ((chipsInHand == MAX_CHIPS) && gainGold) {
     for (int col = 0; col < NUM_COLORS; col++) {
-      if (player->chips[col]) {
-        take[col] = -1;
+      if (player->chips.get(col)) {
+        take.set(col, -1);
         pushMove(M_RESERVE, id);
-        take[col] = 0;
+        take.set(col, 0);
       }
     }
   } else {
@@ -139,5 +139,5 @@ void MoveGen::pushMove(int type, int cardId) {
   Move& m = moves[numMoves++];
   m.type = type;
   m.cardId = cardId;
-  m.delta.copyFrom(take);
+  m.delta = take;
 }

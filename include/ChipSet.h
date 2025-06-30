@@ -5,9 +5,11 @@
 
 class ChipSet {
 public:
-  char c[NUM_COLORS + 1];
+  ChipSet();
 
-  char& operator[](int index);
+  int get(int index);
+  void set(int index, int val);
+  void change(int index, int diff);
 
   // Returns an integer that describes this ChipSet uniquely. Assumes that
   // values are between -3 and +4.
@@ -23,7 +25,6 @@ public:
   // Reads NUM_COLORS values. Sets the gold value to zero.
   void fromArray(const int* src);
 
-  void copyFrom(ChipSet& src);
   int getMaskNoGold();
   void fromMask(int mask);
 
@@ -33,4 +34,11 @@ public:
 
   std::string toString();
   std::string toStringAsCards();
+
+private:
+  static const int ZERO_MASK;
+
+  // A 24-bit integer. Every four bits refer to one color. Quantities are
+  // shifted by 8, thus quantities -8..7 are stored in x as 0..15.
+  int x;
 };

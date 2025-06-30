@@ -5,67 +5,71 @@
 #include <stdio.h>
 #include <string>
 
-char& ChipSet::operator[](int index) {
-  return c[index];
+const int ChipSet::ZERO_MASK = 0x888888;
+
+ChipSet::ChipSet() {
+  clear();
+}
+
+int ChipSet::get(int index) {
+  int offset = 4 * index;
+  return ((x >> offset) & 15) - 8;
+}
+
+void ChipSet::set(int index, int val) {
+  int offset = 4 * index;
+  x = (x & ~(15 << offset)) | ((val + 8) << offset);
+}
+
+void ChipSet::change(int index, int diff) {
+  int offset = 4 * index;
+  x += diff << offset;
 }
 
 int ChipSet::hashCode() {
-  int h = 0;
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    h = (h << 3) + (c[color] + 3);
-  }
-  return h;
+  return x;
 }
 
 void ChipSet::readFromStdin() {
+  clear();
   for (int color = 0; color <= NUM_COLORS; color++) {
-    scanf("%d", &c[color]);
+    int qty;
+    scanf("%d", &qty);
+    set(color, qty);
   }
 }
 
 void ChipSet::clear() {
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    c[color] = 0;
-  }
+  x = ZERO_MASK;
 }
 
 int ChipSet::getTotal() {
   int total = 0;
   for (int color = 0; color <= NUM_COLORS; color++) {
-    total += c[color];
+    total += get(color);
   }
   return total;
 }
 
 void ChipSet::add(ChipSet& src) {
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    c[color] += src.c[color];
-  }
+  x += src.x - ZERO_MASK;
 }
 
 void ChipSet::subtract(ChipSet& src) {
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    c[color] -= src.c[color];
-  }
+  x -= src.x - ZERO_MASK;
 }
 
 void ChipSet::fromArray(const int* src) {
   for (int color = 0; color < NUM_COLORS; color++) {
-    c[color] = src[color];
+    set(color, src[color]);
   }
-  c[NUM_COLORS] = 0;
-}
-
-void ChipSet::copyFrom(ChipSet& src) {
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    c[color] = src.c[color];
-  }
+  set(NUM_COLORS, 0);
 }
 
 int ChipSet::getMaskNoGold() {
   int mask = 0;
   for (int color = 0; color < NUM_COLORS; color++) {
-    if (c[color]) {
+    if (get(color)) {
       mask |= (1 << color);
     }
   }
@@ -74,13 +78,13 @@ int ChipSet::getMaskNoGold() {
 
 void ChipSet::fromMask(int mask) {
   for (int color = 0; color <= NUM_COLORS; color++) {
-    c[color] = (mask >> color) & 1;
+    set(color, (mask >> color) & 1);
   }
 }
 
 int ChipSet::findAtLeast(int qty) {
   int i = 0;
-  while ((i <= NUM_COLORS) && (c[i] < qty)) {
+  while ((i <= NUM_COLORS) && (get(i) < qty)) {
     i++;
   }
   return i;
@@ -89,7 +93,7 @@ int ChipSet::findAtLeast(int qty) {
 int ChipSet::countValue(int val) {
   int cnt = 0;
   for (int color = 0; color <= NUM_COLORS; color++) {
-    cnt += (c[color] == val);
+    cnt += (get(color) == val);
   }
   return cnt;
 }
@@ -97,8 +101,8 @@ int ChipSet::countValue(int val) {
 std::string ChipSet::toString() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
-    if (c[color]) {
-      s += Str::chips(color, c[color]) + ' ';
+    if (get(color)) {
+      s += Str::chips(color, get(color)) + ' ';
     }
   }
   return s;
@@ -107,8 +111,8 @@ std::string ChipSet::toString() {
 std::string ChipSet::toStringAsCards() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
-    if (c[color]) {
-      s += Str::cards(color, c[color]) + ' ';
+    if (get(color)) {
+      s += Str::cards(color, get(color)) + ' ';
     }
   }
   return s;

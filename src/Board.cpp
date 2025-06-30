@@ -120,7 +120,7 @@ std::vector<int> Board::translateTakeDifferentMove(Move m) {
   v.push_back(numTaken);
 
   for (int col = 0; col < NUM_COLORS; col++) {
-    if (m.delta[col] == 1) {
+    if (m.delta.get(col) == 1) {
       v.push_back(col);
     }
   }
@@ -141,7 +141,7 @@ std::vector<int> Board::translateTakeSameMove(Move m) {
   }
 
   v.push_back(pos);
-  m.delta[pos] -= 2;
+  m.delta.change(pos, -2);
   translateReturns(m, v);
 
   return v;
@@ -165,7 +165,7 @@ std::vector<int> Board::translateBuyMove(Move m) {
 
 void Board::translateReturns(Move m, std::vector<int>& v) {
   for (int col = 0; col < NUM_COLORS; col++) {
-    for (int i = 0; i < -m.delta[col]; i++) {
+    for (int i = 0; i < -m.delta.get(col); i++) {
       v.push_back(col);
     }
   }
