@@ -34,5 +34,8 @@ private:
   void genBuyFaceUpCard();
   void genBuyReservedCard();
 
+  // When there are no other moves.
+  void addNullMove();
+
   void pushMove(int type, int cardId, int cardPos);
 };

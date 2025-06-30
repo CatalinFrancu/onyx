@@ -17,6 +17,7 @@ void MoveGen::run() {
   genReserve();
   genBuyFaceUpCard();
   genBuyReservedCard();
+  addNullMove();
 }
 
 void MoveGen::genTakeDifferentColorChips() {
@@ -105,6 +106,13 @@ void MoveGen::genBuyReservedCard() {
     if ((id > 0) && player->affords(id, take)) {
       pushMove(M_BUY_RESERVE, id, i);
     }
+  }
+}
+
+void MoveGen::addNullMove() {
+  if (!numMoves) {
+    take.clear();
+    pushMove(M_TAKE_DIFFERENT, 0, 0);
   }
 }
 
