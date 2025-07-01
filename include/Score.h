@@ -9,7 +9,9 @@ public:
   Score();
 
   void set(int pos, int val);
-  int calculate(int player);
+
+  // Translates this tuple into a number from player's point of view.
+  int pov(int player);
   bool betterThan(Score& other, int player);
 
 private:

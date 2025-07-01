@@ -14,16 +14,15 @@ Move Evaluator::getBestMove() {
   moveGen.randomizeMoves();
 
   int p = board->currPlayer;
-  Score bestScore;
-  bestScore.set(p, -INFIN);
+  int bestScore = -INFIN;
   Move bestMove;
 
   for (int i = 0; i < moveGen.numMoves; i++) {
     Move& m = moveGen.moves[i];
     board->makeMove(m);
-    Score score = minimax(MINIMAX_DEPTH);
-    // Log::info("%s has a score of %d", m.toString().c_str(), score.calculate(p));
-    if (score.betterThan(bestScore, p)) {
+    int score = minimax(MINIMAX_DEPTH).pov(p);
+    // Log::info("%s has a score of %d", m.toString().c_str(), score);
+    if (score > bestScore) {
       bestScore = score;
       bestMove = m;
     }
@@ -43,14 +42,17 @@ Score Evaluator::minimax(int depth) {
 
   int p = board->currPlayer;
   Score best;
-  best.set(p, -INFIN);
+  int bestPov = -INFIN;
 
   for (int i = 0; i < moveGen.numMoves; i++) {
     Move& m = moveGen.moves[i];
     board->makeMove(m);
+    // Calling static eval here give us another 3% speedup or so.
     Score score = minimax(depth - 1);
-    if (score.betterThan(best, p)) {
+    int pov = score.pov(p);
+    if (pov > bestPov) {
       best = score;
+      bestPov = pov;
     }
     board->undoMove(m);
   }
