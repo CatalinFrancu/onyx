@@ -4,9 +4,10 @@
 #include "Util.h"
 #include <algorithm>
 
-MoveGen::MoveGen(Board* board) {
+MoveGen::MoveGen(Board* board, Move* moves) {
   this->board = board;
   this->player = &board->players[board->currPlayer];
+  this->moves = moves;
   numMoves = 0;
   chipsInHand = player->chips.getTotal();
 }

@@ -6,10 +6,10 @@ class MoveGen {
 public:
   Board* board;
   Player* player;
-  Move moves[MAX_MOVES];
+  Move* moves;
   int numMoves;
 
-  MoveGen(Board* board);
+  MoveGen(Board* board, Move* moves);
   void run();
   void randomizeMoves();
 

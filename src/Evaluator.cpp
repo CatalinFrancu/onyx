@@ -9,7 +9,7 @@ Evaluator::Evaluator(Board* board) {
 }
 
 Move Evaluator::getBestMove() {
-  MoveGen moveGen(board);
+  MoveGen moveGen(board, moves[0]);
   moveGen.run();
   moveGen.randomizeMoves();
 
@@ -37,7 +37,7 @@ Score Evaluator::minimax(int depth) {
     return board->staticEval();
   }
 
-  MoveGen moveGen(board);
+  MoveGen moveGen(board, moves[depth]);
   moveGen.run();
 
   int p = board->currPlayer;
