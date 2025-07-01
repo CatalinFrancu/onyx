@@ -86,15 +86,15 @@ bool Player::affords(int cardId, ChipSet& cost) {
 }
 
 void Player::gainCard(int id) {
-  int color = Card::get(id).color;
-  cards.change(color, 1);
-  points += Card::get(id).points;
+  Card card = Card::get(id);
+  cards.change(card.color, 1);
+  points += card.points;
 }
 
 void Player::loseCard(int id) {
-  int color = Card::get(id).color;
-  cards.change(color, -1);
-  points -= Card::get(id).points;
+  Card card = Card::get(id);
+  cards.change(card.color, -1);
+  points -= card.points;
 }
 
 int Player::staticEval() {

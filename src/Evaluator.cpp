@@ -15,14 +15,14 @@ Move Evaluator::getBestMove() {
 
   int p = board->currPlayer;
   Score bestScore;
-  bestScore.badFor(p);
+  bestScore.set(p, -INFIN);
   Move bestMove;
 
   for (int i = 0; i < moveGen.numMoves; i++) {
     Move& m = moveGen.moves[i];
     board->makeMove(m);
     Score score = minimax(MINIMAX_DEPTH);
-    // Log::info("%s has a score of %d", m.toString().c_str(), score);
+    // Log::info("%s has a score of %d", m.toString().c_str(), score.calculate(p));
     if (score.betterThan(bestScore, p)) {
       bestScore = score;
       bestMove = m;
@@ -43,7 +43,7 @@ Score Evaluator::minimax(int depth) {
 
   int p = board->currPlayer;
   Score best;
-  best.badFor(p);
+  best.set(p, -INFIN);
 
   for (int i = 0; i < moveGen.numMoves; i++) {
     Move& m = moveGen.moves[i];

@@ -9,19 +9,20 @@ void Score::init(int numPlayers) {
   Score::numPlayers = Util::max(numPlayers, 2);
 }
 
-void Score::badFor(int player) {
+Score::Score() {
   for (int i = 0; i < numPlayers; i++) {
     s[i] = 0;
   }
-  s[player] = -INFIN;
+  sum = 0;
+}
+
+void Score::set(int pos, int val) {
+  s[pos] = val;
+  sum += val;
 }
 
 int Score::calculate(int player) {
-  int sum = s[player] * numPlayers;
-  for (int i = 0; i < numPlayers; i++) {
-    sum -= s[i];
-  }
-  return sum;
+  return s[player] * numPlayers - sum;
 }
 
 bool Score::betterThan(Score& other, int player) {

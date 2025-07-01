@@ -4,16 +4,16 @@
 
 class Score {
 public:
-  int s[MAX_PLAYERS];
-
   static void init(int numPlayers);
 
-  // Initialize it to a very bad score from player's perspective.
-  void badFor(int player);
+  Score();
 
+  void set(int pos, int val);
   int calculate(int player);
   bool betterThan(Score& other, int player);
 
 private:
   static int numPlayers;
+  int s[MAX_PLAYERS];
+  int sum;
 };

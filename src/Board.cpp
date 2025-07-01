@@ -94,7 +94,7 @@ void Board::undoMove(Move& m) {
 Score Board::staticEval() {
   Score sc;
   for (int p = 0; p < numPlayers; p++) {
-    sc.s[p] = players[p].staticEval();
+    sc.set(p, players[p].staticEval());
   }
   return sc;
 }
