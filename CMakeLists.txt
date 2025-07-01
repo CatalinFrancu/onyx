@@ -4,9 +4,10 @@ cmake_minimum_required(VERSION 4.0)
 # Set the project name
 project (onyx)
 
-set(CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall")
 
-file(GLOB SOURCES "src/*.cpp")
+file (GLOB SOURCES "src/*.cpp")
 
 add_executable(onyx ${SOURCES})
 
