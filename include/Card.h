@@ -12,7 +12,7 @@ public:
   int level;
 
   static void createAll();
-  static Card get(int id);
+  static Card& get(int id);
   std::string toString();
 
 private:

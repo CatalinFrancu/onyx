@@ -101,7 +101,7 @@ const int Card::DATA[NUM_CARDS + 1][NUM_COLORS + 2] = {
 
 Card Card::cards[NUM_CARDS + 1];
 
-Card Card::get(int id) {
+Card& Card::get(int id) {
   return cards[id];
 }
 

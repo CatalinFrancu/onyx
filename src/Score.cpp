@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "Util.h"
+#include <string.h>
 
 int Score::numPlayers;
 
@@ -10,9 +11,7 @@ void Score::init(int numPlayers) {
 }
 
 Score::Score() {
-  for (int i = 0; i < numPlayers; i++) {
-    s[i] = 0;
-  }
+  memset(s, 0, sizeof(s));
   sum = 0;
 }
 
