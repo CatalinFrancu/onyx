@@ -67,9 +67,9 @@ int ChipSet::getMaskNoGold() {
   return mask;
 }
 
-int ChipSet::findAtLeast(int qty) {
+int ChipSet::findValue(int val) {
   int i = 0;
-  while ((i <= NUM_COLORS) && (get(i) < qty)) {
+  while (get(i) != val) {
     i++;
   }
   return i;
@@ -87,7 +87,10 @@ std::string ChipSet::toString() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
     if (get(color)) {
-      s += Str::chips(color, get(color)) + ' ';
+      if (s.size()) {
+        s += ' ';
+      }
+      s += Str::chips(color, get(color));
     }
   }
   return s;
@@ -97,7 +100,10 @@ std::string ChipSet::toStringAsCards() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {
     if (get(color)) {
-      s += Str::cards(color, get(color)) + ' ';
+      if (s.size()) {
+        s += ' ';
+      }
+      s += Str::cards(color, get(color));
     }
   }
   return s;

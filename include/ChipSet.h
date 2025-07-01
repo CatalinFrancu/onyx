@@ -22,8 +22,7 @@ public:
 
   int getMaskNoGold();
 
-  // Returns NUM_COLORS + 1 if no color has >= qty chips.
-  int findAtLeast(int qty);
+  int findValue(int val); // assumes the value exist
   int countValue(int val);
 
   std::string toString();

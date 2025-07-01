@@ -108,16 +108,16 @@ std::vector<int> Board::translateMove(Move m) {
     case M_RESERVE: return translateReserveMove(m);
     case M_BUY_FACEUP: return translateBuyMove(m);
     case M_BUY_RESERVE: return translateBuyMove(m);
-    default: exit(1);
+    default:
+      Log::fatal("Unknown move type: %s", m.toString().c_str());
+      exit(1);
   }
 }
 
 std::vector<int> Board::translateTakeDifferentMove(Move m) {
   int numTaken = m.delta.countValue(1);
 
-  std::vector<int> v;
-  v.push_back(M_TAKE_DIFFERENT);
-  v.push_back(numTaken);
+  std::vector<int> v = { M_TAKE_DIFFERENT, numTaken };
 
   for (int col = 0; col < NUM_COLORS; col++) {
     if (m.delta.get(col) == 1) {
@@ -125,50 +125,22 @@ std::vector<int> Board::translateTakeDifferentMove(Move m) {
     }
   }
 
-  translateReturns(m, v);
   return v;
 }
 
 std::vector<int> Board::translateTakeSameMove(Move m) {
-  std::vector<int> v;
-  v.push_back(M_TAKE_SAME);
+  int pos = m.delta.findValue(2);
 
-  // There may not be a value of 2, or even 1, due to returns.
-  int pos = m.delta.findAtLeast(1);
-
-  if (pos >= NUM_COLORS) {
-    pos = chips.findAtLeast(TAKE_TWO_LIMIT);
-  }
-
-  v.push_back(pos);
-  m.delta.change(pos, -2);
-  translateReturns(m, v);
-
-  return v;
+  return { M_TAKE_SAME, pos };
 }
 
 std::vector<int> Board::translateReserveMove(Move m) {
-  std::vector<int> v;
-  v.push_back(M_RESERVE);
-  v.push_back(m.cardId);
-  translateReturns(m, v);
-  return v;
+  return { M_RESERVE, m.cardId};
 }
 
 std::vector<int> Board::translateBuyMove(Move m) {
-  std::vector<int> v;
   // The protocol does not differentiate between the two M_BUY_* cases.
-  v.push_back(M_BUY_FACEUP);
-  v.push_back(m.cardId);
-  return v;
-}
-
-void Board::translateReturns(Move m, std::vector<int>& v) {
-  for (int col = 0; col < NUM_COLORS; col++) {
-    for (int i = 0; i < -m.delta.get(col); i++) {
-      v.push_back(col);
-    }
-  }
+  return { M_BUY_FACEUP, m.cardId };
 }
 
 void Board::print() {

@@ -32,7 +32,6 @@ private:
   std::vector<int> translateTakeSameMove(Move m);
   std::vector<int> translateReserveMove(Move m);
   std::vector<int> translateBuyMove(Move m);
-  void translateReturns(Move m, std::vector<int>& v);
 
   void printCards();
 };
