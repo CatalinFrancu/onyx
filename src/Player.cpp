@@ -64,7 +64,7 @@ bool Player::affords(int cardId, ChipSet& cost) {
   cost = cards;
   cost.subtract(card.cost);
 
-  // Negative values must be covered with chips or gold
+  // Negative values must be covered with chips or gold.
   for (int col = 0; col < NUM_COLORS; col++) {
     int needed = -cost.get(col);
     if (needed < 0) {

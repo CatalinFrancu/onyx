@@ -22,7 +22,7 @@ public:
 
   int getMaskNoGold();
 
-  int findValue(int val); // assumes the value exist
+  int findValue(int val); // assumes the value exists
   int countValue(int val);
 
   std::string toString();
