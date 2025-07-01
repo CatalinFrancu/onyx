@@ -2,8 +2,6 @@
 
 #include "Board.h"
 
-#include <unordered_set>
-
 class MoveGen {
 public:
   Board* board;
@@ -17,7 +15,6 @@ public:
 
 private:
   int chipsInHand;
-  std::unordered_set<int> seenChipSets;
 
   // + means the player gains chips; - means she spends chips.
   ChipSet take;

@@ -16,18 +16,9 @@ int ChipSet::get(int index) {
   return ((x >> offset) & 15) - 8;
 }
 
-void ChipSet::set(int index, int val) {
-  int offset = 4 * index;
-  x = (x & ~(15 << offset)) | ((val + 8) << offset);
-}
-
 void ChipSet::change(int index, int diff) {
   int offset = 4 * index;
   x += diff << offset;
-}
-
-int ChipSet::hashCode() {
-  return x;
 }
 
 void ChipSet::readFromStdin() {
@@ -35,7 +26,7 @@ void ChipSet::readFromStdin() {
   for (int color = 0; color <= NUM_COLORS; color++) {
     int qty;
     scanf("%d", &qty);
-    set(color, qty);
+    change(color, qty);
   }
 }
 
@@ -60,10 +51,10 @@ void ChipSet::subtract(ChipSet& src) {
 }
 
 void ChipSet::fromArray(const int* src) {
+  clear();
   for (int color = 0; color < NUM_COLORS; color++) {
-    set(color, src[color]);
+    change(color, src[color]);
   }
-  set(NUM_COLORS, 0);
 }
 
 int ChipSet::getMaskNoGold() {
@@ -74,12 +65,6 @@ int ChipSet::getMaskNoGold() {
     }
   }
   return mask;
-}
-
-void ChipSet::fromMask(int mask) {
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    set(color, (mask >> color) & 1);
-  }
 }
 
 int ChipSet::findAtLeast(int qty) {

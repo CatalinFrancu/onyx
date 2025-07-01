@@ -8,12 +8,7 @@ public:
   ChipSet();
 
   int get(int index);
-  void set(int index, int val);
   void change(int index, int diff);
-
-  // Returns an integer that describes this ChipSet uniquely. Assumes that
-  // values are between -3 and +4.
-  int hashCode();
 
   void readFromStdin();
   void clear();
@@ -26,7 +21,6 @@ public:
   void fromArray(const int* src);
 
   int getMaskNoGold();
-  void fromMask(int mask);
 
   // Returns NUM_COLORS + 1 if no color has >= qty chips.
   int findAtLeast(int qty);

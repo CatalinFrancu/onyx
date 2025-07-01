@@ -9,7 +9,6 @@ MoveGen::MoveGen(Board* board) {
   this->player = &board->players[board->currPlayer];
   numMoves = 0;
   chipsInHand = player->chips.getTotal();
-  seenChipSets.clear();
 }
 
 void MoveGen::run() {
@@ -95,9 +94,9 @@ void MoveGen::genTakeSameColorChips() {
     take.clear();
     for (int col = 0; col < NUM_COLORS; col++) {
       if (board->chips.get(col) >= TAKE_TWO_LIMIT) {
-        take.set(col, 2);
+        take.change(col, 2);
         pushMove(M_TAKE_SAME, 0);
-        take.set(col, 0);
+        take.change(col, -2);
       }
     }
   }
@@ -111,7 +110,7 @@ void MoveGen::genReserve() {
 
   if (hasRoomInReserve && hasRoomForChip) {
     take.clear();
-    take.set(NUM_COLORS, gainGold);
+    take.change(NUM_COLORS, gainGold);
     BitSet cp = board->cards;
     while (cp) {
       int id = cp.getAndClear();
@@ -153,14 +152,6 @@ void MoveGen::addNullMove() {
 }
 
 void MoveGen::pushMove(int type, int cardId) {
-  if ((type == M_TAKE_DIFFERENT) || (type == M_TAKE_SAME)) {
-    int h = take.hashCode();
-    if (seenChipSets.contains(h)) {
-      return;
-    }
-    seenChipSets.insert(h);
-  }
-
   // Log::debug("pushing move #%d type %d gain %s",
   //            numMoves, type, take.toString().c_str());
   Move& m = moves[numMoves++];
