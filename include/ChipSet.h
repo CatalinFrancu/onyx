@@ -35,4 +35,5 @@ private:
   // A 24-bit integer. Every four bits refer to one color. Quantities are
   // shifted by 8, thus quantities -8..7 are stored in x as 0..15.
   int x;
+  int sum;
 };

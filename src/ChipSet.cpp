@@ -19,6 +19,7 @@ int ChipSet::get(int index) {
 void ChipSet::change(int index, int diff) {
   int offset = 4 * index;
   x += diff << offset;
+  sum += diff;
 }
 
 void ChipSet::readFromStdin() {
@@ -32,22 +33,21 @@ void ChipSet::readFromStdin() {
 
 void ChipSet::clear() {
   x = ZERO_MASK;
+  sum = 0;
 }
 
 int ChipSet::getTotal() {
-  int total = 0;
-  for (int color = 0; color <= NUM_COLORS; color++) {
-    total += get(color);
-  }
-  return total;
+  return sum;
 }
 
 void ChipSet::add(ChipSet& src) {
   x += src.x - ZERO_MASK;
+  sum += src.sum;
 }
 
 void ChipSet::subtract(ChipSet& src) {
   x -= src.x - ZERO_MASK;
+  sum -= src.sum;
 }
 
 void ChipSet::fromArray(const int* src) {
