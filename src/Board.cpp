@@ -41,7 +41,7 @@ void Board::readNobles() {
   scanf("%d", &numNobles);
   while (numNobles--) {
     scanf("%d", &id);
-    nobles.push_back(id);
+    nobles.toggle(id);
   }
 }
 
@@ -144,11 +144,7 @@ std::vector<int> Board::translateBuyMove(Move m) {
 void Board::print() {
   Log::debug("======== Player to move: %d", currPlayer + 1);
 
-  Log::debug("======== Nobles:");
-  for (int id: nobles) {
-    Log::debug("    %s", Noble::get(id).toString().c_str());
-  }
-
+  printNobles();
   printCards();
 
   Log::debug("======== Chips:");
@@ -168,5 +164,14 @@ void Board::printCards() {
   while (cp) {
     int id = cp.getAndClear();
     Log::debug("    %s", Card::get(id).toString().c_str());
+  }
+}
+
+void Board::printNobles() {
+  Log::debug("======== Nobles:");
+  BitSet cp = nobles;
+  while (cp) {
+    int id = cp.getAndClear();
+    Log::debug("    %s", Noble::get(id).toString().c_str());
   }
 }

@@ -13,7 +13,7 @@ public:
   int currPlayer;
   ChipSet chips;
   BitSet cards;
-  std::vector<char> nobles;
+  BitSet nobles;
   Player players[MAX_PLAYERS];
 
   void readFromStdin();
@@ -35,4 +35,5 @@ private:
   std::vector<int> translateBuyMove(Move m);
 
   void printCards();
+  void printNobles();
 };
