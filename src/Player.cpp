@@ -55,20 +55,29 @@ void Player::readNobles() {
   }
 }
 
+// cost contains negative quantities (from the player's PoV)
 bool Player::affords(int cardId, ChipSet& cost) {
   Card card = Card::get(cardId);
   int goldInHand = chips.get(NUM_COLORS);
   int goldNeeded = 0;
-  cost.clear();
-  for (int col = 0; col < NUM_COLORS; col++) {
-    int chipsNeeded = Util::max(card.cost.get(col) - cards.get(col), 0);
-    int chipsPaid = Util::min(chipsNeeded, chips.get(col));
-    cost.change(col, -chipsPaid); // negative from the player's PoV
 
-    int goldPaid = chipsNeeded - chipsPaid;
-    goldNeeded += goldPaid;
-    if (goldNeeded > goldInHand) {
-      return false;
+  cost = cards;
+  cost.subtract(card.cost);
+
+  // Negative values must be covered with chips or gold
+  for (int col = 0; col < NUM_COLORS; col++) {
+    int needed = -cost.get(col);
+    if (needed < 0) {
+      cost.change(col, needed); // set to 0
+    } else {
+      int have = chips.get(col);
+      if (have < needed) {
+        cost.change(col, needed - have);
+        goldNeeded += needed - have;
+        if (goldNeeded > goldInHand) {
+          return false;
+        }
+      }
     }
   }
 

@@ -31,8 +31,13 @@ public:
 private:
   static const int ZERO_MASK;
 
-  // A 24-bit integer. Every four bits refer to one color. Quantities are
-  // shifted by 8, thus quantities -8..7 are stored in x as 0..15.
+  // A 30-bit integer. Every five bits refer to one color. Quantities are
+  // shifted by 7, thus quantities -7..24 are stored in x as 0..31.
+  //
+  // This is should be enough even in the worst case. For example, when
+  // computing affordability, we add chips and cards. There are 18 cards and 7
+  // chips of each color and their sum is 25 > 24. However, those 18 cards are
+  // worth 28 points so the game would be over.
   int x;
   int sum;
 };

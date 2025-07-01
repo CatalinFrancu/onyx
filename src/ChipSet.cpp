@@ -5,19 +5,19 @@
 #include <stdio.h>
 #include <string>
 
-const int ChipSet::ZERO_MASK = 0x888888;
+const int ChipSet::ZERO_MASK = 0b00111'00111'00111'00111'00111'00111;
 
 ChipSet::ChipSet() {
   clear();
 }
 
 int ChipSet::get(int index) {
-  int offset = 4 * index;
-  return ((x >> offset) & 15) - 8;
+  int offset = 5 * index;
+  return ((x >> offset) & 31) - 7;
 }
 
 void ChipSet::change(int index, int diff) {
-  int offset = 4 * index;
+  int offset = 5 * index;
   x += diff << offset;
   sum += diff;
 }
