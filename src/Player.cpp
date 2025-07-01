@@ -57,21 +57,23 @@ void Player::readNobles() {
 
 bool Player::affords(int cardId, ChipSet& cost) {
   Card card = Card::get(cardId);
+  int goldInHand = chips.get(NUM_COLORS);
   int goldNeeded = 0;
   cost.clear();
   for (int col = 0; col < NUM_COLORS; col++) {
     int chipsNeeded = Util::max(card.cost.get(col) - cards.get(col), 0);
     int chipsPaid = Util::min(chipsNeeded, chips.get(col));
+    cost.change(col, -chipsPaid); // negative from the player's PoV
+
     int goldPaid = chipsNeeded - chipsPaid;
     goldNeeded += goldPaid;
-    cost.change(col, -chipsPaid); // negative from the player's PoV
+    if (goldNeeded > goldInHand) {
+      return false;
+    }
   }
 
-  bool haveEnoughGold = (chips.get(NUM_COLORS) >= goldNeeded);
-  if (haveEnoughGold) {
-    cost.change(NUM_COLORS, -goldNeeded);
-  }
-  return haveEnoughGold;
+  cost.change(NUM_COLORS, -goldNeeded);
+  return true;
 }
 
 void Player::gainCard(int id) {
