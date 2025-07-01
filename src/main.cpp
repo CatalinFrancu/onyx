@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
   board.readFromStdin();
   // board.print();
 
-  Score::init(board.players.size());
+  Score::init(board.numPlayers);
 
   Evaluator eval(&board);
   Move m = eval.getBestMove();

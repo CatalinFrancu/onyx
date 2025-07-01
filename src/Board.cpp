@@ -8,8 +8,8 @@
 #include <stdio.h>
 
 void Board::readFromStdin() {
-  int numPlayers, ignored;
-  scanf("%d %d", &numPlayers, &currPlayer); // num_players
+  int ignored;
+  scanf("%d %d", &numPlayers, &currPlayer);
   currPlayer--; // make it 0-based
   scanf("%d", &ignored); // round_number
   chips.readFromStdin();
@@ -17,10 +17,8 @@ void Board::readFromStdin() {
   readCards();
   readNobles();
 
-  while (numPlayers--) {
-    Player p;
-    p.readFromStdin();
-    players.push_back(p);
+  for (int i = 0; i < numPlayers; i++) {
+    players[i].readFromStdin();
   }
 }
 
@@ -67,11 +65,11 @@ void Board::makeMove(Move& m) {
       break;
   }
 
-  currPlayer = (currPlayer + 1) % players.size();
+  currPlayer = (currPlayer + 1) % numPlayers;
 }
 
 void Board::undoMove(Move& m) {
-  currPlayer = (currPlayer + players.size() - 1) % players.size();
+  currPlayer = (currPlayer + numPlayers - 1) % numPlayers;
 
   Player& p = players[currPlayer];
   p.chips.subtract(m.delta);
@@ -95,7 +93,7 @@ void Board::undoMove(Move& m) {
 
 Score Board::staticEval() {
   Score sc;
-  for (int p = 0; p < players.size(); p++) {
+  for (int p = 0; p < numPlayers; p++) {
     sc.s[p] = players[p].staticEval();
   }
   return sc;
@@ -156,7 +154,7 @@ void Board::print() {
   Log::debug("======== Chips:");
   Log::debug("    %s", chips.toString().c_str());
 
-  for (int i = 0; i < (int)players.size(); i++) {
+  for (int i = 0; i < numPlayers; i++) {
     Log::debug("======== Player %d:", 1 + i);
     players[i].print();
   }

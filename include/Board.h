@@ -9,11 +9,12 @@
 
 class Board {
 public:
+  int numPlayers;
   int currPlayer;
   ChipSet chips;
   BitSet cards;
   std::vector<char> nobles;
-  std::vector<Player> players;
+  Player players[MAX_PLAYERS];
 
   void readFromStdin();
   void makeMove(Move& m);
