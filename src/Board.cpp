@@ -65,11 +65,11 @@ void Board::makeMove(Move& m) {
       break;
   }
 
-  currPlayer = (currPlayer + 1) % numPlayers;
+  currPlayer = (currPlayer == numPlayers - 1) ? 0 : (currPlayer + 1);
 }
 
 void Board::undoMove(Move& m) {
-  currPlayer = (currPlayer + numPlayers - 1) % numPlayers;
+  currPlayer = currPlayer ? (currPlayer - 1) : (numPlayers - 1);
 
   Player& p = players[currPlayer];
   p.chips.subtract(m.delta);

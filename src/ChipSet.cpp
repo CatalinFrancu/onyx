@@ -12,13 +12,11 @@ ChipSet::ChipSet() {
 }
 
 int ChipSet::get(int index) {
-  int offset = 5 * index;
-  return ((x >> offset) & 31) - 7;
+  return ((x >> (5 * index)) & 31) - 7;
 }
 
 void ChipSet::change(int index, int diff) {
-  int offset = 5 * index;
-  x += diff << offset;
+  x += diff << (5 * index);
   sum += diff;
 }
 
