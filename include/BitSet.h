@@ -4,7 +4,7 @@
 
 class BitSet {
 public:
-  u128 x;
+  u128 x = 0;
 
   void clear();
   operator bool() const;
