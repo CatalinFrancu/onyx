@@ -22,74 +22,101 @@ void MoveGen::run() {
 }
 
 void MoveGen::genTakeDifferentColorChips() {
+  take.clear();
   int boardMask = board->chips.getMaskNoGold();
-  int toTake = Util::min(Util::popcount(boardMask), MAX_TAKE);
-  for (int mask = boardMask; mask; mask = (mask - 1) & boardMask) {
-    if (Util::popcount(mask) == toTake) {
-      take.fromMask(mask);
-      genReturns(M_TAKE_DIFFERENT);
+  int colorsAvail = Util::popcount(boardMask);
+  int roomInHand = MAX_CHIPS - chipsInHand;
+
+  int toTake = Util::min(MAX_TAKE, Util::min(colorsAvail, roomInHand));
+  switch (toTake) {
+    case 3: genTake3Chips(); break;
+    case 2: genTake2Chips(); break;
+    case 1: genTake1Chip(); break;
+  }
+}
+
+void MoveGen::genTake3Chips() {
+  // To hardcode or not to hardcode, that is the question.
+  for (int i = 0; i < NUM_COLORS - 2; i++) {
+    for (int j = i + 1; j < NUM_COLORS - 1; j++) {
+      for (int k = j + 1; k < NUM_COLORS; k++) {
+        genTake3Chips(i, j, k);
+      }
     }
+  }
+}
+
+void MoveGen::genTake3Chips(int i, int j, int k) {
+  if (board->chips.get(i) && board->chips.get(j) && board->chips.get(k)) {
+    take.change(i, 1);
+    take.change(j, 1);
+    take.change(k, 1);
+    pushMove(M_TAKE_DIFFERENT, 0);
+    take.change(i, -1);
+    take.change(j, -1);
+    take.change(k, -1);
+  }
+}
+
+void MoveGen::genTake2Chips() {
+  for (int i = 0; i < NUM_COLORS - 1; i++) {
+    for (int j = i + 1; j < NUM_COLORS; j++) {
+      genTake2Chips(i, j);
+    }
+  }
+}
+
+void MoveGen::genTake2Chips(int i, int j) {
+  if (board->chips.get(i) && board->chips.get(j)) {
+    take.change(i, 1);
+    take.change(j, 1);
+    pushMove(M_TAKE_DIFFERENT, 0);
+    take.change(i, -1);
+    take.change(j, -1);
+  }
+}
+
+void MoveGen::genTake1Chip() {
+  for (int i = 0; i < NUM_COLORS; i++) {
+    genTake1Chip(i);
+  }
+}
+
+void MoveGen::genTake1Chip(int i) {
+  if (board->chips.get(i)) {
+    take.change(i, 1);
+    pushMove(M_TAKE_DIFFERENT, 0);
+    take.change(i, -1);
   }
 }
 
 void MoveGen::genTakeSameColorChips() {
-  take.clear();
-  for (int col = 0; col < NUM_COLORS; col++) {
-    if (board->chips.get(col) >= TAKE_TWO_LIMIT) {
-      take.set(col, 2);
-      genReturns(M_TAKE_SAME);
-      take.set(col, 0);
-    }
-  }
-}
-
-void MoveGen::genReturns(int type) {
-  int toReturn = Util::max(chipsInHand + take.getTotal() - MAX_CHIPS, 0);
-  genReturnsRec(0, toReturn, type);
-}
-
-void MoveGen::genReturnsRec(int col, int toReturn, int type) {
-  if (!toReturn) {
-    pushMove(type, 0);
-    return;
-  }
-  if (col == NUM_COLORS) {
-    return;
-  }
-
-  int avail = player->chips.get(col) + take.get(col);
-  int maxReturn = Util::min(avail, toReturn);
-  for (int r = 0; r <= maxReturn; r++) {
-    genReturnsRec(col + 1, toReturn - r, type);
-    take.change(col, -1);
-  }
-  take.change(col, maxReturn + 1);
-}
-
-void MoveGen::genReserve() {
-  if (player->reserve.popcount() + player->numSecretReserve < MAX_RESERVE) {
-    BitSet cp = board->cards;
-    while (cp) {
-      int id = cp.getAndClear();
-      genReserveForCard(id);
-    }
-  }
-}
-
-void MoveGen::genReserveForCard(int id) {
-  bool gainGold = (board->chips.get(NUM_COLORS) > 0);
-  take.clear();
-  take.set(NUM_COLORS, gainGold);
-  if ((chipsInHand == MAX_CHIPS) && gainGold) {
+  if (chipsInHand + 2 <= MAX_CHIPS) {
+    take.clear();
     for (int col = 0; col < NUM_COLORS; col++) {
-      if (player->chips.get(col)) {
-        take.set(col, -1);
-        pushMove(M_RESERVE, id);
+      if (board->chips.get(col) >= TAKE_TWO_LIMIT) {
+        take.set(col, 2);
+        pushMove(M_TAKE_SAME, 0);
         take.set(col, 0);
       }
     }
-  } else {
-    pushMove(M_RESERVE, id);
+  }
+}
+
+void MoveGen::genReserve() {
+  int rsize = player->reserve.popcount() + player->numSecretReserve;
+  bool hasRoomInReserve = (rsize < MAX_RESERVE);
+  bool gainGold = (board->chips.get(NUM_COLORS) > 0);
+  bool hasRoomForChip = !gainGold || (chipsInHand < MAX_CHIPS);
+
+  if (hasRoomInReserve && hasRoomForChip) {
+    take.clear();
+    take.set(NUM_COLORS, gainGold);
+    BitSet cp = board->cards;
+    while (cp) {
+      int id = cp.getAndClear();
+      pushMove(M_RESERVE, id);
+    }
   }
 }
 
@@ -126,7 +153,7 @@ void MoveGen::addNullMove() {
 }
 
 void MoveGen::pushMove(int type, int cardId) {
-  if ((type == M_TAKE_DIFFERENT) || (type == M_TAKE_DIFFERENT)) {
+  if ((type == M_TAKE_DIFFERENT) || (type == M_TAKE_SAME)) {
     int h = take.hashCode();
     if (seenChipSets.contains(h)) {
       return;

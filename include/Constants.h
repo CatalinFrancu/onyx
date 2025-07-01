@@ -27,9 +27,9 @@ const int M_RESERVE = 3;
 const int M_BUY_FACEUP = 4;
 const int M_BUY_RESERVE = 5;
 
-const int MAX_MOVES = 1'000;
+const int MAX_MOVES = 50;
 
-const int MINIMAX_DEPTH = 2;
+const int MINIMAX_DEPTH = 3;
 const int INFIN = 100'000'000;
 
 const int LOG_FATAL = 0;

@@ -23,14 +23,14 @@ private:
   ChipSet take;
 
   void genTakeDifferentColorChips();
+  void genTake3Chips();
+  void genTake3Chips(int i, int j, int k);
+  void genTake2Chips();
+  void genTake2Chips(int i, int j);
+  void genTake1Chip();
+  void genTake1Chip(int i);
   void genTakeSameColorChips();
-  // Given that the player had player->chips to begin with, and took more
-  // chips as described by cost, figure out all the possible returns.
-  void genReturns(int type);
-  void genReturnsRec(int col, int toReturn, int type);
-
   void genReserve();
-  void genReserveForCard(int id);
   void genBuyFaceUpCard();
   void genBuyReservedCard();
 
