@@ -17,6 +17,7 @@ public:
   Player players[MAX_PLAYERS];
 
   void readFromStdin();
+  bool isGameOver();
   void makeMove(Move& m);
   void undoMove(Move& m);
   Score staticEval();
@@ -26,6 +27,7 @@ public:
   void print();
 
 private:
+  int numFinishedPlayers = 0;
   void readCards();
   void readNobles();
 

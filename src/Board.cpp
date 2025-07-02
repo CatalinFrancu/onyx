@@ -45,6 +45,10 @@ void Board::readNobles() {
   }
 }
 
+bool Board::isGameOver() {
+  return (currPlayer == 0) && (numFinishedPlayers > 0);
+}
+
 void Board::makeMove(Move& m) {
   Player& p = players[currPlayer];
   p.chips.add(m.delta);
@@ -65,6 +69,8 @@ void Board::makeMove(Move& m) {
       break;
   }
 
+  numFinishedPlayers += (p.points >= ENDGAME_POINTS);
+
   currPlayer = (currPlayer == numPlayers - 1) ? 0 : (currPlayer + 1);
 }
 
@@ -72,6 +78,7 @@ void Board::undoMove(Move& m) {
   currPlayer = currPlayer ? (currPlayer - 1) : (numPlayers - 1);
 
   Player& p = players[currPlayer];
+  numFinishedPlayers -= (p.points >= ENDGAME_POINTS);
   p.chips.subtract(m.delta);
   chips.add(m.delta);
 

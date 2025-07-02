@@ -98,7 +98,11 @@ void Player::loseCard(int id) {
 }
 
 int Player::staticEval() {
-  return (int)points * 20 + cards.getTotal() * 10 + chips.getTotal();
+  if (points >= ENDGAME_POINTS) {
+    return INFIN * points;
+  } else {
+    return (int)points * 20 + cards.getTotal() * 10 + chips.getTotal();
+  }
 }
 
 void Player::print() {

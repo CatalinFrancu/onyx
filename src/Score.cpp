@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "Util.h"
+#include <sstream>
 
 int Score::numPlayers;
 
@@ -24,4 +25,18 @@ int Score::pov(int player) {
 
 bool Score::betterThan(Score& other, int player) {
   return pov(player) > other.pov(player);
+}
+
+std::string Score::toString() {
+  std::stringstream ss;
+  ss << "<";
+  for (int i = 0; i < numPlayers; i++) {
+    if (i) {
+      ss << ',';
+    }
+    ss << s[i];
+  }
+  ss << ">";
+
+  return ss.str();
 }

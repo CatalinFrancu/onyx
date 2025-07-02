@@ -15,5 +15,5 @@ void Stats::report() {
     p /= 1'000;
     unit = 'k';
   }
-  fprintf(stderr, "kibitz %d%c poziții evaluate", p, unit);
+  fprintf(stderr, "kibitz %d%c poziții evaluate\n", p, unit);
 }

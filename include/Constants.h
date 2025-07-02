@@ -21,6 +21,8 @@ const int MAX_RESERVE = 3;
 const int NUM_NOBLES = 10;
 const int NOBLE_POINTS = 3;
 
+const int ENDGAME_POINTS = 15;
+
 const int M_TAKE_DIFFERENT = 1;
 const int M_TAKE_SAME = 2;
 const int M_RESERVE = 3;
@@ -30,7 +32,7 @@ const int M_BUY_RESERVE = 5;
 const int MAX_MOVES = 50;
 
 const int MINIMAX_DEPTH = 4;
-const int INFIN = 100'000'000;
+const int INFIN = 10'000'000;
 
 const int LOG_FATAL = 0;
 const int LOG_ERROR = 1;
