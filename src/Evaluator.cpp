@@ -2,6 +2,7 @@
 
 #include "Log.h"
 #include "MoveGen.h"
+#include "Stats.h"
 #include "Util.h"
 
 Evaluator::Evaluator(Board* board) {
@@ -33,6 +34,8 @@ Move Evaluator::getBestMove() {
 }
 
 Score Evaluator::minimax(int depth) {
+  Stats::numPositions++;
+
   if (!depth) {
     return board->staticEval();
   }

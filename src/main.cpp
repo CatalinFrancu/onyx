@@ -2,6 +2,7 @@
 #include "Card.h"
 #include "Evaluator.h"
 #include "Noble.h"
+#include "Stats.h"
 
 int main(int argc, char** argv) {
   Card::createAll();
@@ -21,6 +22,8 @@ int main(int argc, char** argv) {
     printf("%d ", tok);
   }
   printf("\n");
+
+  Stats::report();
 
   return 0;
 }
