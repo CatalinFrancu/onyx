@@ -101,7 +101,11 @@ int Player::staticEval() {
   if (points >= ENDGAME_POINTS) {
     return INFIN * points;
   } else {
-    return (int)points * 20 + cards.getTotal() * 10 + chips.getTotal();
+    return (int)points * 20
+      + cards.getTotal() * 10
+      + reserve.popcount() * (-10) // don't be hasty to reserve cards
+      + chips.getTotal()
+      + chips.get(NUM_COLORS); // gold is worth 2
   }
 }
 
