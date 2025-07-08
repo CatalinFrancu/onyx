@@ -51,3 +51,7 @@ const int STRAT_MCTS = 1;
 const int MCTS_ROLLOUTS_PER_NODE = 1;
 const int MCTS_EXPLORATION_CONSTANT = 1.41;
 const int MCTS_MAX_TURNS = 200;
+
+// The chance to select a reserve action is divided by this factor in random
+// rollouts.
+const int MCTS_RESERVE_FACTOR = 10;

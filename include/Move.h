@@ -10,5 +10,7 @@ public:
   char noblePos; // index in Board.nobles of the noble gained
   ChipSet delta; // chips gained (+) or spent (-)
 
+  int getMctsFactor();
+
   std::string toString();
 };

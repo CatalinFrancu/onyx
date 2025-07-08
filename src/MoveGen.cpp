@@ -141,8 +141,19 @@ void MoveGen::genBuyReservedCard() {
 }
 
 Move MoveGen::getRandomMove() {
-  int index = Util::rand(0, numMoves - 1);
-  return this->moves[index];
+  int sumFactors = 0;
+  for (int i = 0; i < numMoves; i++) {
+    sumFactors += moves[i].getMctsFactor();
+  }
+
+  int left = Util::rand(0, sumFactors - 1);
+  int i = 0, f;
+  while (left >= (f = moves[i].getMctsFactor())) {
+    left -= f;
+    i++;
+  }
+
+  return moves[i];
 }
 
 void MoveGen::randomizeMoves() {
