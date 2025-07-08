@@ -44,3 +44,6 @@ const int LOG_WARN = 2;
 const int LOG_SUCCESS = 3;
 const int LOG_INFO = 4;
 const int LOG_DEBUG = 5;
+
+const int STRAT_MINIMAX = 0;
+const int STRAT_MCTS = 1;

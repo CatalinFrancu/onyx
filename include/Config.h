@@ -4,6 +4,10 @@
  * Use this file for values that the user may wish to control.
  **/
 
+#include "Constants.h"
+
+const int STRATEGY = STRAT_MINIMAX;
+
 const int MINIMAX_DEPTH = 4;
 
 const int LOG_LEVEL = LOG_DEBUG;

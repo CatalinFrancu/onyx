@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Card.h"
 #include "Evaluator.h"
+#include "Log.h"
 #include "Noble.h"
 #include "Stats.h"
 
@@ -12,10 +13,17 @@ int main(int argc, char** argv) {
   board.readFromStdin();
   // board.print();
 
-  Score::init(board.numPlayers);
+  Move m;
 
-  Evaluator eval(&board);
-  Move m = eval.getBestMove();
+  if (STRATEGY == STRAT_MINIMAX) {
+    Score::init(board.numPlayers);
+    Evaluator eval(&board);
+    m = eval.getBestMove();
+  } else if (STRATEGY == STRAT_MCTS) {
+    Log::fatal("Strategy MCTS is not yet implemented.");
+  } else {
+    Log::fatal("Unknown value STRATEGY = %d.", STRATEGY);
+  }
 
   std::vector<int> tokens = board.translateMove(m);
   for (int tok: tokens) {
