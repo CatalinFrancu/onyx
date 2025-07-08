@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Board.h"
+#include "Config.h"
 #include "Constants.h"
 #include "Move.h"
 #include "Score.h"

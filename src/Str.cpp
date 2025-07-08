@@ -1,6 +1,7 @@
 #include "Str.h"
 
 #include "AnsiColors.h"
+#include "Config.h"
 
 std::string Str::chips(int color, int count) {
   return colorRepeat(CHIP_CHAR, color, count);

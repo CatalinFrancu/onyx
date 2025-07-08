@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * Use this file for values taht are built into the game rules or the code
+ * architecture and that the user should not mess with.
+ **/
+
 typedef unsigned __int128 u128;
 typedef unsigned long long u64;
 
@@ -31,7 +36,6 @@ const int M_BUY_RESERVE = 5;
 
 const int MAX_MOVES = 50;
 
-const int MINIMAX_DEPTH = 4;
 const int INFIN = 10'000'000;
 
 const int LOG_FATAL = 0;
@@ -40,8 +44,3 @@ const int LOG_WARN = 2;
 const int LOG_SUCCESS = 3;
 const int LOG_INFO = 4;
 const int LOG_DEBUG = 5;
-
-const int LOG_LEVEL = LOG_DEBUG;
-
-const char CHIP_CHAR[5] = "◉";
-const char CARD_CHAR[5] = "🂠";

@@ -1,6 +1,7 @@
 #include "Log.h"
 
 #include "AnsiColors.h"
+#include "Config.h"
 #include "Constants.h"
 #include <stdarg.h>
 #include <stdio.h>
