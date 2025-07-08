@@ -11,6 +11,7 @@ public:
 
   MoveGen(Board* board, Move* moves);
   void run();
+  Move getRandomMove();
   void randomizeMoves();
 
 private:

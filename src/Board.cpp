@@ -49,6 +49,15 @@ bool Board::isGameOver() {
   return (currPlayer == 0) && (numFinishedPlayers > 0);
 }
 
+bool Board::isWinner(int player) {
+  for (int i = 0; i < numPlayers; i++) {
+    if (players[i].points > players[player].points) {
+      return false;
+    }
+  }
+  return true;
+}
+
 void Board::makeMove(Move& m) {
   Player& p = players[currPlayer];
   p.chips.add(m.delta);
@@ -95,6 +104,20 @@ void Board::undoMove(Move& m) {
       p.reserve.toggle(m.cardId);
       p.loseCard(m.cardId);
       break;
+  }
+}
+
+void Board::makeMoveWithReplacement(Move& m) {
+  makeMove(m);
+  if (m.type == M_BUY_FACEUP || m.type == M_RESERVE) {
+    Card& card = Card::get(m.cardId);
+    int lo = 1 + MAX_ID_PER_LEVEL[card.level - 1];
+    int hi = MAX_ID_PER_LEVEL[card.level];
+    int id;
+    do {
+      id = Util::rand(lo, hi);
+    } while (cards.test(id));
+    cards.toggle(id);
   }
 }
 

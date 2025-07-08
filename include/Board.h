@@ -18,8 +18,13 @@ public:
 
   void readFromStdin();
   bool isGameOver();
+  bool isWinner(int player);
   void makeMove(Move& m);
   void undoMove(Move& m);
+
+  // Fake replacement: draws a card at random from the same level, even it has
+  // been used before. This action is irreversible.
+  void makeMoveWithReplacement(Move& m);
   Score staticEval();
 
   // Translate a move into a list of tokens according to the protocol.

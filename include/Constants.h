@@ -47,3 +47,7 @@ const int LOG_DEBUG = 5;
 
 const int STRAT_MINIMAX = 0;
 const int STRAT_MCTS = 1;
+
+const int MCTS_ROLLOUTS_PER_NODE = 1;
+const int MCTS_EXPLORATION_CONSTANT = 1.41;
+const int MCTS_MAX_TURNS = 200;

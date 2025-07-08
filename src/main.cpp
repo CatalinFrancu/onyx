@@ -1,7 +1,9 @@
 #include "Board.h"
 #include "Card.h"
 #include "Evaluator.h"
+#include "Globals.h"
 #include "Log.h"
+#include "MCTSAgent.h"
 #include "Noble.h"
 #include "Stats.h"
 
@@ -12,15 +14,18 @@ int main(int argc, char** argv) {
   Board board;
   board.readFromStdin();
   // board.print();
+  gNumPlayers = board.numPlayers;
 
   Move m;
 
   if (STRATEGY == STRAT_MINIMAX) {
-    Score::init(board.numPlayers);
+    Score::init(gNumPlayers);
     Evaluator eval(&board);
     m = eval.getBestMove();
+    Stats::report();
   } else if (STRATEGY == STRAT_MCTS) {
-    Log::fatal("Strategy MCTS is not yet implemented.");
+    MCTSAgent mcts(board, MILLISECONDS_PER_MOVE);
+    m = mcts.getBestMove();
   } else {
     Log::fatal("Unknown value STRATEGY = %d.", STRATEGY);
   }
@@ -30,8 +35,6 @@ int main(int argc, char** argv) {
     printf("%d ", tok);
   }
   printf("\n");
-
-  Stats::report();
 
   return 0;
 }

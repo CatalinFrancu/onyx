@@ -1,0 +1,73 @@
+#include "MCTSAgent.h"
+
+#include "Globals.h"
+#include "Log.h"
+#include "MoveGen.h"
+#include "Util.h"
+
+MCTSAgent::MCTSAgent(Board& board, int timeLimitMillis) {
+  this->rootBoard = board;
+  this->timeLimitMillis = timeLimitMillis;
+  this->root = new MonteCarloTreeNode(NULL);
+}
+
+Move MCTSAgent::getBestMove() {
+  Util::markTime();
+  while (Util::getElapsedTimeMillis() < timeLimitMillis) {
+    select();
+    expand();
+    MCTSScore reward = simulate();
+    backpropagate(reward);
+  }
+
+  fprintf(stderr, "kibitz Ran %d simulations\n", this->root->numSimulations);
+
+  MonteCarloTreeNode* child = root->getChildWithBestRatio(rootBoard.currPlayer);
+  return child->move;
+}
+
+void MCTSAgent::select() {
+  node = root;
+  board = rootBoard;
+
+  while (node->numChildren) {
+    node = node->uctSelectChild(board.currPlayer);
+    board.makeMove(node->move);
+  }
+}
+
+void MCTSAgent::expand() {
+  if (node->numSimulations) {
+    node->expand(&board, moveBuf);
+    node = node->selectRandomChild();
+    board.makeMove(node->move);
+  }
+}
+
+MCTSScore MCTSAgent::simulate() {
+  MCTSScore reward;
+  for (int i = 0; i < MCTS_ROLLOUTS_PER_NODE; i++) {
+    Board b = board;
+    int turn = 0;
+    while ((turn < MCTS_MAX_TURNS) && !b.isGameOver()) {
+      turn++;
+      MoveGen gen(&b, moveBuf);
+      gen.run();
+      Move move = gen.getRandomMove();
+      b.makeMoveWithReplacement(move);
+    }
+    // Log::info("Simulation took %d turns", turn);
+    for (int i = 0; i < gNumPlayers; i++) {
+      reward.s[i] += b.isWinner(i);
+    }
+  }
+  return reward;
+}
+
+void MCTSAgent::backpropagate(MCTSScore reward) {
+  while (node) {
+    node->numSimulations += MCTS_ROLLOUTS_PER_NODE;
+    node->score += reward;
+    node = node->parent;
+  }
+}

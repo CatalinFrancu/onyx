@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.h"
 #include <random>
 
 class Util {
@@ -11,7 +12,12 @@ public:
   static int popcount(int x);
   static int rand(int lo, int hi);
 
+  static void markTime();
+  static int getElapsedTimeMillis();
+
 private:
   static std::random_device rd;
+  static u64 markedTimeMillis;
 
+  static u64 getTimestampMillis();
 };

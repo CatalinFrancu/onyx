@@ -140,9 +140,13 @@ void MoveGen::genBuyReservedCard() {
   }
 }
 
+Move MoveGen::getRandomMove() {
+  int index = Util::rand(0, numMoves - 1);
+  return this->moves[index];
+}
+
 void MoveGen::randomizeMoves() {
   std::shuffle(moves, moves + numMoves, Util::rng);
-
 }
 
 void MoveGen::addNullMove() {
