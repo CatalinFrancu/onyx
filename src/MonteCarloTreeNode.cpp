@@ -61,15 +61,19 @@ MonteCarloTreeNode* MonteCarloTreeNode::uctSelectChild(int currPlayer) {
   return &children[besti];
 }
 
+double MonteCarloTreeNode::getWinProbability(int currPlayer) {
+  return numSimulations
+    ? (double)score.s[currPlayer] / numSimulations
+    : -INFINITY;
+}
+
 MonteCarloTreeNode* MonteCarloTreeNode::getChildWithBestRatio(int currPlayer) {
   double best = -INFINITY;
   int besti = 0;
 
   for (int i = 0; i < numChildren; i++) {
     MonteCarloTreeNode* c = children + i; // syntactic sugar
-    double r = c->numSimulations
-      ? (double)c->score.s[currPlayer] / c->numSimulations
-      : -INFINITY;
+    double r = c->getWinProbability(currPlayer);
 
     Log::debug("Child %d move %s has %d simulations, %d wins, ratio %0.5lf",
                i, c->move.toString().c_str(), c->numSimulations,

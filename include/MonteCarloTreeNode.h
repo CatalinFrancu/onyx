@@ -20,6 +20,7 @@ public:
   // Select a child based on the UCT formula.
   MonteCarloTreeNode* uctSelectChild(int currPlayer);
 
+  double getWinProbability(int currPlayer);
   MonteCarloTreeNode* getChildWithBestRatio(int Currplayer);
 
   void expand(Board* board, Move* moveBuf);

@@ -20,9 +20,12 @@ Move MCTSAgent::getBestMove() {
     backpropagate(reward);
   }
 
-  fprintf(stderr, "kibitz Ran %d simulations\n", this->root->numSimulations);
+  int p = rootBoard.currPlayer;
+  MonteCarloTreeNode* child = root->getChildWithBestRatio(p);
+  fprintf(stderr, "kibitz Ran %d simulations. Win probability %.3lf.\n",
+          this->root->numSimulations,
+          child->getWinProbability(p));
 
-  MonteCarloTreeNode* child = root->getChildWithBestRatio(rootBoard.currPlayer);
   return child->move;
 }
 
