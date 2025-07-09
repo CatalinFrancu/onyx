@@ -1,15 +1,15 @@
-#include "Evaluator.h"
+#include "MinimaxAgent.h"
 
 #include "Log.h"
 #include "MoveGen.h"
-#include "Stats.h"
 #include "Util.h"
 
-Evaluator::Evaluator(Board* board) {
+MinimaxAgent::MinimaxAgent(Board* board) {
   this->board = board;
+  numPositions = 0;
 }
 
-Move Evaluator::getBestMove() {
+Move MinimaxAgent::getBestMove() {
   MoveGen moveGen(board, moves[0]);
   moveGen.run();
   moveGen.randomizeMoves();
@@ -32,11 +32,13 @@ Move Evaluator::getBestMove() {
     board->undoMove(m);
   }
 
+  report();
+
   return bestMove;
 }
 
-Score Evaluator::minimax(int depth) {
-  Stats::numPositions++;
+Score MinimaxAgent::minimax(int depth) {
+  numPositions++;
 
   if (!depth || board->isGameOver()) {
     return board->staticEval();
@@ -63,4 +65,17 @@ Score Evaluator::minimax(int depth) {
   }
 
   return best;
+}
+
+void MinimaxAgent::report() {
+  int p = numPositions;
+  char unit;
+  if (p >= 1'000'000) {
+    p /= 1'000'000;
+    unit = 'M';
+  } else {
+    p /= 1'000;
+    unit = 'k';
+  }
+  fprintf(stderr, "kibitz Evaluated %d%c positions.\n", p, unit);
 }

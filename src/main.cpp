@@ -1,11 +1,10 @@
 #include "Board.h"
 #include "Card.h"
-#include "Evaluator.h"
 #include "Globals.h"
 #include "Log.h"
 #include "MCTSAgent.h"
+#include "MinimaxAgent.h"
 #include "Noble.h"
-#include "Stats.h"
 
 int main(int argc, char** argv) {
   Card::createAll();
@@ -20,12 +19,11 @@ int main(int argc, char** argv) {
 
   if (STRATEGY == STRAT_MINIMAX) {
     Score::init(gNumPlayers);
-    Evaluator eval(&board);
-    m = eval.getBestMove();
-    Stats::report();
+    MinimaxAgent agent(&board);
+    m = agent.getBestMove();
   } else if (STRATEGY == STRAT_MCTS) {
-    MCTSAgent mcts(board, MILLISECONDS_PER_MOVE);
-    m = mcts.getBestMove();
+    MCTSAgent agent(board, MILLISECONDS_PER_MOVE);
+    m = agent.getBestMove();
   } else {
     Log::fatal("Unknown value STRATEGY = %d.", STRATEGY);
   }

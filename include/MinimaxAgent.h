@@ -6,14 +6,16 @@
 #include "Move.h"
 #include "Score.h"
 
-class Evaluator {
+class MinimaxAgent {
 public:
   Board* board;
   Move moves[MINIMAX_DEPTH + 1][MAX_MOVES];
+  int numPositions;
 
-  Evaluator(Board* board);
+  MinimaxAgent(Board* board);
   Move getBestMove();
 
 private:
   Score minimax(int depth);
+  void report();
 };
