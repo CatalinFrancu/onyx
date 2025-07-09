@@ -33,6 +33,8 @@ const int M_TAKE_SAME = 2;
 const int M_RESERVE = 3;
 const int M_BUY_FACEUP = 4;
 const int M_BUY_RESERVE = 5;
+// Weights for various move types in random rollouts.
+const int MCTS_WEIGHTS[6] = { 0, 300, 300, 1, 1000, 1000 };
 
 const int MAX_MOVES = 50;
 
@@ -51,7 +53,3 @@ const int STRAT_MCTS = 1;
 const int MCTS_ROLLOUTS_PER_NODE = 1;
 const int MCTS_EXPLORATION_CONSTANT = 1.41;
 const int MCTS_MAX_TURNS = 200;
-
-// The chance to select a reserve action is divided by this factor in random
-// rollouts.
-const int MCTS_RESERVE_FACTOR = 10;

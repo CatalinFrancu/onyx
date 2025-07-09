@@ -2,8 +2,8 @@
 
 #include <sstream>
 
-int Move::getMctsFactor() {
-  return (type == M_RESERVE) ? 1 : MCTS_RESERVE_FACTOR;
+int Move::getMctsWeight() {
+  return MCTS_WEIGHTS[(int)type];
 }
 
 std::string Move::toString() {

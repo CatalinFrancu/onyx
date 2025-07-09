@@ -71,9 +71,9 @@ MonteCarloTreeNode* MonteCarloTreeNode::getChildWithBestRatio(int currPlayer) {
       ? (double)c->score.s[currPlayer] / c->numSimulations
       : -INFINITY;
 
-    // Log::info("Child %d move %s has %d simulations, %d wins, ratio %0.5lf",
-    //           i, c->move.toString().c_str(), c->numSimulations,
-    //           c->score.s[currPlayer], r);
+    Log::debug("Child %d move %s has %d simulations, %d wins, ratio %0.5lf",
+               i, c->move.toString().c_str(), c->numSimulations,
+               c->score.s[currPlayer], r);
 
     if (r > best) {
       best = r;
