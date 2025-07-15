@@ -4,7 +4,7 @@
 
 class MCTSScore {
 public:
-  int s[MAX_PLAYERS];
+  double s[MAX_PLAYERS];
 
   MCTSScore();
   MCTSScore& operator+=(const MCTSScore& other);

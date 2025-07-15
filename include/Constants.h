@@ -34,7 +34,7 @@ const int M_RESERVE = 3;
 const int M_BUY_FACEUP = 4;
 const int M_BUY_RESERVE = 5;
 // Weights for various move types in random rollouts.
-const int MCTS_WEIGHTS[6] = { 0, 30, 30, 1, 100, 100 };
+const int MCTS_WEIGHTS[6] = { 0, 1, 1, 1, 1, 1 };
 
 const int MAX_MOVES = 50;
 

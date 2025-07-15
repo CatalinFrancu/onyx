@@ -2,6 +2,7 @@
 
 #include "BitSet.h"
 #include "ChipSet.h"
+#include "MCTSScore.h"
 #include "Move.h"
 #include "Player.h"
 #include "Score.h"
@@ -18,7 +19,7 @@ public:
 
   void readFromStdin();
   bool isGameOver();
-  bool isWinner(int player);
+  MCTSScore getMCTSScore();
   void makeMove(Move& m);
   void undoMove(Move& m);
 

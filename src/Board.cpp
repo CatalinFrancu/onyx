@@ -51,13 +51,31 @@ bool Board::isGameOver() {
   return (currPlayer == 0) && (numFinishedPlayers > 0);
 }
 
-bool Board::isWinner(int player) {
+MCTSScore Board::getMCTSScore() {
+  int maxP = 0, minC = 0, numWinners = 0;
   for (int i = 0; i < numPlayers; i++) {
-    if (players[i].points > players[player].points) {
-      return false;
+    int p = players[i].points;
+    int c = players[i].cards.getTotal();
+    if ((p > maxP) ||
+        ((p == maxP) && (c < minC))) {
+      maxP = p;
+      minC = c;
+      numWinners = 1;
+    } else if ((p == maxP) && (c == minC)) {
+      numWinners++;
     }
   }
-  return true;
+
+  MCTSScore result;
+  for (int i = 0; i < numPlayers; i++) {
+    if ((players[i].points == maxP) &&
+        (players[i].cards.getTotal() == minC)) {
+      result.s[i] = 1.0 / numWinners;
+    } else {
+      result.s[i] = 0.0;
+    }
+  }
+  return result;
 }
 
 void Board::makeMove(Move& m) {

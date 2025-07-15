@@ -4,7 +4,7 @@
 
 MCTSScore::MCTSScore() {
   for (int i = 0; i < gNumPlayers; i++) {
-    s[i] = 0;
+    s[i] = 0.0;
   }
 }
 

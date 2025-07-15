@@ -60,9 +60,7 @@ MCTSScore MCTSAgent::simulate() {
       b.makeMoveWithReplacement(move);
     }
     // Log::info("Simulation took %d turns", turn);
-    for (int i = 0; i < gNumPlayers; i++) {
-      reward.s[i] += b.isWinner(i);
-    }
+    reward += b.getMCTSScore();
   }
   return reward;
 }
