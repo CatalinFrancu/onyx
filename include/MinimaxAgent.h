@@ -17,5 +17,5 @@ public:
 
 private:
   Score minimax(int depth);
-  void report();
+  void report(int bestScore);
 };

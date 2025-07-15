@@ -32,7 +32,7 @@ Move MinimaxAgent::getBestMove() {
     board->undoMove(m);
   }
 
-  report();
+  report(bestScore);
 
   return bestMove;
 }
@@ -67,7 +67,7 @@ Score MinimaxAgent::minimax(int depth) {
   return best;
 }
 
-void MinimaxAgent::report() {
+void MinimaxAgent::report(int bestScore) {
   int p = numPositions;
   char unit;
   if (p >= 1'000'000) {
@@ -77,5 +77,6 @@ void MinimaxAgent::report() {
     p /= 1'000;
     unit = 'k';
   }
-  fprintf(stderr, "kibitz Evaluated %d%c positions.\n", p, unit);
+  fprintf(stderr, "kibitz Evaluated %d%c positions. Score %d.\n",
+          p, unit, bestScore);
 }
