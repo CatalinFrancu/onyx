@@ -17,8 +17,10 @@ void Board::readFromStdin() {
   readCards();
   readNobles();
 
+  numFinishedPlayers = 0;
   for (int i = 0; i < numPlayers; i++) {
     players[i].readFromStdin();
+    numFinishedPlayers += (players[i].points >= ENDGAME_POINTS);
   }
 }
 

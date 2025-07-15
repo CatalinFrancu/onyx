@@ -40,7 +40,7 @@ void MCTSAgent::select() {
 }
 
 void MCTSAgent::expand() {
-  if (node->numSimulations) {
+  if ((node->numSimulations) && !board.isGameOver()) {
     node->expand(&board, moveBuf);
     node = node->selectRandomChild();
     board.makeMove(node->move);
