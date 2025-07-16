@@ -17,6 +17,8 @@ public:
   bool affords(int cardId, ChipSet& cost);
   void gainCard(int id);
   void loseCard(int id);
+  void gainNoble();
+  void loseNoble();
   int staticEval();
   void print();
 

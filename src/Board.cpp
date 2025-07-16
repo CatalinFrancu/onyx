@@ -78,10 +78,27 @@ MCTSScore Board::getMCTSScore() {
   return result;
 }
 
+void Board::grantNoble(int id) {
+  if (id != NONE) {
+    Player& p = players[currPlayer];
+    p.gainNoble();
+    nobles.toggle(id);
+  }
+}
+
+void Board::revokeNoble(int id) {
+  if (id != NONE) {
+    Player& p = players[currPlayer];
+    p.loseNoble();
+    nobles.toggle(id);
+  }
+}
+
 void Board::makeMove(Move& m) {
   Player& p = players[currPlayer];
   p.chips.add(m.delta);
   chips.subtract(m.delta);
+  grantNoble(m.nobleId);
 
   switch (m.type) {
     case M_RESERVE:
@@ -110,6 +127,7 @@ void Board::undoMove(Move& m) {
   numFinishedPlayers -= (p.points >= ENDGAME_POINTS);
   p.chips.subtract(m.delta);
   chips.add(m.delta);
+  revokeNoble(m.nobleId);
 
   switch (m.type) {
     case M_RESERVE:

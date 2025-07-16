@@ -97,6 +97,16 @@ void Player::loseCard(int id) {
   points -= card.points;
 }
 
+void Player::gainNoble() {
+  numNobles++;
+  points += NOBLE_POINTS;
+}
+
+void Player::loseNoble() {
+  numNobles--;
+  points -= NOBLE_POINTS;
+}
+
 int Player::staticEval() {
   if (points >= ENDGAME_POINTS) {
     return INFIN * points;

@@ -7,7 +7,7 @@ class Move {
 public:
   char type;
   char cardId;
-  char noblePos; // index in Board.nobles of the noble gained
+  char nobleId;
   ChipSet delta; // chips gained (+) or spent (-)
 
   int getMctsWeight();

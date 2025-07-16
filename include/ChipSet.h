@@ -25,6 +25,11 @@ public:
   int findValue(int val); // assumes the value exists
   int countValue(int val);
 
+  // If there is exactly one chip missing to get from this to (at least)
+  // target, return its color. If we already have the target, return
+  // NONE. Otherwise return IMPOSSIBLE.
+  int missingColor(ChipSet target);
+
   std::string toString();
   std::string toStringAsCards();
 

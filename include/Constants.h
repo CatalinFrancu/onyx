@@ -39,6 +39,8 @@ const int MCTS_WEIGHTS[6] = { 0, 1, 1, 1, 1, 1 };
 const int MAX_MOVES = 50;
 
 const int INFIN = 10'000'000;
+const int NONE = -1;
+const int IMPOSSIBLE = -2;
 
 const int LOG_FATAL = 0;
 const int LOG_ERROR = 1;

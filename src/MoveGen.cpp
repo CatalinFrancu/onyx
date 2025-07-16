@@ -1,6 +1,8 @@
 #include "MoveGen.h"
 
+#include "Card.h"
 #include "Log.h"
+#include "Noble.h"
 #include "Util.h"
 #include <algorithm>
 
@@ -10,15 +12,37 @@ MoveGen::MoveGen(Board* board, Move* moves) {
   this->moves = moves;
   numMoves = 0;
   chipsInHand = player->chips.getTotal();
+  winnableNobleNoCard = NONE;
+  for (int c = 0; c < NUM_COLORS; c++) {
+    winnableNoble[c] = NONE;
+  }
 }
 
 void MoveGen::run() {
+  computeWinnableNobles();
   genTakeDifferentColorChips();
   genTakeSameColorChips();
   genReserve();
   genBuyFaceUpCard();
   genBuyReservedCard();
   addNullMove();
+}
+
+void MoveGen::computeWinnableNobles() {
+  BitSet cp = board->nobles;
+  while (cp) {
+    int id = cp.getAndClear();
+    Noble nob = Noble::get(id);
+    int color = player->cards.missingColor(nob.cost);
+    if (color == NONE) {
+      winnableNobleNoCard = id;
+      for (int c = 0; c < NUM_COLORS; c++) {
+        winnableNoble[c] = id;
+      }
+    } else if (color != IMPOSSIBLE) {
+      winnableNoble[color] = id;
+    }
+  }
 }
 
 void MoveGen::genTakeDifferentColorChips() {
@@ -174,4 +198,15 @@ void MoveGen::pushMove(int type, int cardId) {
   m.type = type;
   m.cardId = cardId;
   m.delta = take;
+
+  m.nobleId = NONE;
+  if (winnableNobleNoCard != NONE) {
+    m.nobleId = winnableNobleNoCard;
+  } else if (cardId &&
+             (m.type == M_BUY_FACEUP || m.type == M_BUY_RESERVE)) {
+    int color = Card::get(cardId).color;
+    if (winnableNoble[color] != NONE) {
+      m.nobleId = winnableNoble[color];
+    }
+  }
 }

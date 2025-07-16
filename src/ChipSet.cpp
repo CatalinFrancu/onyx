@@ -81,6 +81,20 @@ int ChipSet::countValue(int val) {
   return cnt;
 }
 
+int ChipSet::missingColor(ChipSet target) {
+  int result = NONE;
+  for (int color = 0; color < NUM_COLORS; color++) {
+    int us = get(color);
+    int them = target.get(color);
+    if (them - us >= 2) {
+      result = IMPOSSIBLE;
+    } else if (them - us == 1) {
+      result = (result == NONE) ? color : IMPOSSIBLE;
+    }
+  }
+  return result;
+}
+
 std::string ChipSet::toString() {
   std::string s;
   for (int color = 0; color <= NUM_COLORS; color++) {

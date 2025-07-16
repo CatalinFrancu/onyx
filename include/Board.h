@@ -37,6 +37,9 @@ private:
   void readCards();
   void readNobles();
 
+  void grantNoble(int id);
+  void revokeNoble(int id);
+
   std::vector<int> translateTakeDifferentMove(Move m);
   std::vector<int> translateTakeSameMove(Move m);
   std::vector<int> translateReserveMove(Move m);
