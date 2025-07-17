@@ -21,7 +21,7 @@ Move MinimaxAgent::getBestMove() {
   for (int i = 0; i < moveGen.numMoves; i++) {
     Move& m = moveGen.moves[i];
     board->makeMove(m);
-    Score score = minimax(MINIMAX_DEPTH);
+    Score score = minimax(MINIMAX_DEPTH - 1); // count our own depth
     int val = score.pov(p);
     // Log::info("%s has a score of %s = %d",
     //           m.toString().c_str(), score.toString().c_str(), val);
