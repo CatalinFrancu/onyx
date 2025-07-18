@@ -26,6 +26,13 @@ Move MCTSAgent::getBestMove() {
           this->root->numSimulations,
           child->getWinProbability(p));
 
+  MonteCarloTreeNode* heavy = root->getHeaviestChild();
+  if (heavy != child) {
+    fprintf(stderr, "kibitz Chose a child with %d simulations; heaviest child has %d.\n",
+            child->numSimulations,
+            heavy->numSimulations);
+  }
+
   return child->move;
 }
 

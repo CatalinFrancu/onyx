@@ -86,3 +86,18 @@ MonteCarloTreeNode* MonteCarloTreeNode::getChildWithBestRatio(int currPlayer) {
 
   return &children[besti];
 }
+
+MonteCarloTreeNode* MonteCarloTreeNode::getHeaviestChild() {
+  double best = -INFINITY;
+  int besti = 0;
+
+  for (int i = 0; i < numChildren; i++) {
+    MonteCarloTreeNode* c = children + i; // syntactic sugar
+    if (c->numSimulations > best) {
+      best = c->numSimulations;
+      besti = i;
+    }
+  }
+
+  return &children[besti];
+}

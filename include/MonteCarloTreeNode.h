@@ -22,6 +22,7 @@ public:
 
   double getWinProbability(int currPlayer);
   MonteCarloTreeNode* getChildWithBestRatio(int Currplayer);
+  MonteCarloTreeNode* getHeaviestChild();
 
   void expand(Board* board, Move* moveBuf);
   MonteCarloTreeNode* selectRandomChild();
